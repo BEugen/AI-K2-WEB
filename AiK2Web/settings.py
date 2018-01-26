@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'aik2'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'aik2web',
         'USER': 'aik2webusr',
-        'PASSWORD': '',
+        'PASSWORD': 'yjdfzptkfylbz3',
         'HOST': 'localhost',
         'PORT': ''
     }
