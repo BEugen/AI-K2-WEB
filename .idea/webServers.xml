@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="ssh://administrator@172.31.182.40:22/usr/bin/python3" name="ssh://administrator@172.31.182.40:22/usr/bin/python3">
+      <webServer id="ssh://administrator@172.31.182.40:22/usr/bin/python3" name="ssh://administrator@172.31.182.40:22/usr/bin/python3" url="http://172.31.182.40">
         <fileTransfer host="172.31.182.40" port="22" accessType="SFTP">
           <option name="port" value="22" />
         </fileTransfer>
