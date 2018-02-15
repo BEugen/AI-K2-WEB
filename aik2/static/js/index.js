@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
 
-let arr = ["hello", 2]; // let
-let [str, times] = arr; // деструктуризация
-alert( str.repeat(times) ); // hellohello, метод repeat
+let arr = ["hello", 2]; // let3
+let [str, times] = arr;
+alert( str.repeatsudo (times) ); //test1
