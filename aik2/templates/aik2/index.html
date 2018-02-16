@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
     <div class="content-wrapper">
         <div class="float-left">
             <p class="site-title">Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</p>
@@ -17,7 +18,7 @@
 <div id="body">
     <section class="content-wrapper main-content clear-fix">
         <object id="nn" type="image/svg+xml" data="{% static 'svg/nn-graph.svg' %}" width="100%" height="100%">
-            <img src="{% static 'svg/nn-graph.svg' %}" width="100%" height="100%" alt="image format png"/>
+         <!--   <img src="{% static 'svg/nn-graph.svg' %}" width="100%" height="100%" alt="image format png"/>-->
         </object>
     </section>
 </div>
@@ -27,12 +28,8 @@
             a.addEventListener("load",function(){
                 const svgDoc = a.contentDocument; //get the inner DOM of alpha.svg
                 const svgRoot  = svgDoc.documentElement;
-                let img = $("#path4944", svgRoot);
-                img.css('fill', "#004dff");
-                img = $("#path5035", svgRoot);
-                img.css({'stroke': '#004dff', 'stroke-width': 10});
-                img = $("#circle5557", svgRoot);
-                img.css('fill', "#6ae5ff");
+                getdata('/ai_json_graph', svgRoot, '{{ csrf_token }}');
+                //img.css('fill', "#6ae5ff");
             },false);
         })
 
