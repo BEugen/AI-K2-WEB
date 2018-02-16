@@ -13,12 +13,12 @@ function getdata(url, root, token) {
                 drawdata(data, root);
                 window.setTimeout(function () {
                    getdata(url, root, token);
-                }, 5000);
+                }, 30000);
             },
             error: function() {
                 window.setTimeout(function () {
                     getdata(url, root, token);
-                }, 300000);
+                }, 30000);
             }
         });
 }
@@ -128,13 +128,13 @@ function drawdata(data, root)
              case 1:
                 $("#cnn5", root).css('fill', '#f13c09');
                 $("#cnn5", root).css('fill-opacity', 1.0);
-                $("#cp6", root).css('stroke', '#6ae5ff');
+                $("#cp6", root).css('stroke', '#f13c09');
                 $("#cp6", root).css('stroke-width', strokew(3.0, 12.0, data['predict1']));
                 break;
              case 2:
-                $("#cnn7", root).css('fill', '#6ae5ff');
+                $("#cnn7", root).css('fill', '#f13c09');
                 $("#cnn7", root).css('fill-opacity', 1.0);
-                $("#cp7", root).css('stroke', '#6ae5ff');
+                $("#cp7", root).css('stroke', '#f13c09');
                 $("#cp7", root).css('stroke-width', strokew(3.0, 12.0, data['predict2']));
                 break;
              case 3:
