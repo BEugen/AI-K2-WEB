@@ -22,6 +22,12 @@ class conveyer2next(models.Model):
     predict3 = models.FloatField()
     predict4 = models.FloatField()
 
+class convstat(models.Model):
+    id = models.UUIDField(primary_key=True)
+    nclass = models.IntegerField()
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+
 
 class Getdata(object):
     def get_json_data(self):
