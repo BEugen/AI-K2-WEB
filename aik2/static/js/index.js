@@ -25,7 +25,8 @@ function getdata(url, root, token) {
 
 function drawdata(data, root)
 {
-    if(data['predstop'] <= 0.7 && data['idnext'] == null)
+    if((data['predstop'] <= 0.7 && data['idnext'] == null)
+        ||data == null || data.length == 0)
         return;
     $("[id^='cnn']", root).each(
         function(){
