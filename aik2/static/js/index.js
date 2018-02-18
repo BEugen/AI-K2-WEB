@@ -32,11 +32,16 @@ function drawdata(data, root)
         });
     $("[id^='cce']", root).each(
         function(){
-            $(this).css('fill', '#ffffff');
+            $(this).css('fill', '#747474');
         });
     $("[id^='br']", root).each(
         function(){
             $(this).css('display', 'none');
+        });
+    $("[id^='cp']", root).each(
+        function(){
+            $(this).css('stroke', '#808286');
+            $(this).css('stroke-opacity', 0.5);
         });
     $("#tspan3649", root).text('???');
     $("#tspan3655", root).text('???');
@@ -53,8 +58,8 @@ function drawdata(data, root)
     //$("#image9", root).width(245);
     //$("#image9", root).height(214);
     $("#tspan3631", root).text(data['stamp']);
-    $("#tspan3637", root).text((data['predstop'].toFixed(2)*100) + '%');
-    $("#tspan3620", root).text(((1.0 - data['predstop']).toFixed(2))*100 + '%');
+    $("#tspan3637", root).text(Math.round(data['predstop']*100) + '%');
+    $("#tspan3620", root).text(Math.round((1.0 - data['predstop'])*100) + '%');
     $("#cp3", root).css('stroke', '#6ae5ff');
     $("#cp0", root).css('stroke', '#6ae5ff');
     $("#cp3", root).css('stroke-width', strokew(3.0, 12.0, data['predstop']));
@@ -91,8 +96,8 @@ function drawdata(data, root)
         });
         cnn2.css('fill', '#6ae5ff');
         cnn2.css('fill-opacity', 1.0);
-        $("#tspan3643", root).text(data['predfull'].toFixed(2)*100 + '%');
-        $("#tspan3619", root).text(data['predfull'].toFixed(2)*100 + '%');
+        $("#tspan3643", root).text(Math.round(data['predfull']*100) + '%');
+        $("#tspan3619", root).text(Math.round(data['predfull']*100) + '%');
         $("#cp4", root).css('stroke-width', strokew(3.0, 12.0, data['predfull']));
         $("#cp1", root).css('stroke', '#6ae5ff');
         $("#cp1", root).css('stroke-width', strokew(3.0, 12.0, data['predfull']));
@@ -105,8 +110,8 @@ function drawdata(data, root)
         });
         cnn2.css('fill', '#808286');
         cnn2.css('fill-opacity', 0.5);
-        $("#tspan3643", root).text(data['predempty'].toFixed(2)*100 + '%');
-        $("#tspan3619", root).text(data['predfull'].toFixed(2)*100 + '%');
+        $("#tspan3643", root).text(Math.round(data['predempty']*100) + '%');
+        $("#tspan3619", root).text(Math.round(data['predfull']*100) + '%');
         $("#cp4", root).css('stroke-width', strokew(3.0, 12.0, data['predempty']));
     }
     if (data['idnext'] != null)
@@ -148,11 +153,11 @@ function drawdata(data, root)
             default:
                 break;
         }
-        $("#tspan3649", root).text(data['predict0'].toFixed(2)*100+'%');
-        $("#tspan3655", root).text(data['predict1'].toFixed(2)*100+'%');
-        $("#tspan3661", root).text(data['predict2'].toFixed(2)*100+'%');
-        $("#tspan3667", root).text(data['predict3'].toFixed(2)*100+'%');
-        $("#tspan3625", root).text(data['predict4'].toFixed(2)*100+'%');
+        $("#tspan3649", root).text(Math.round(data['predict0']*100)+'%');
+        $("#tspan3655", root).text(Math.round(data['predict1']*100)+'%');
+        $("#tspan3661", root).text(Math.round(data['predict2']*100)+'%');
+        $("#tspan3667", root).text(Math.round(data['predict3']*100)+'%');
+        $("#tspan3625", root).text(Math.round(data['predict4']*100)+'%');
     }
 }
 
