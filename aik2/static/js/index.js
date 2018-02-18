@@ -25,6 +25,8 @@ function getdata(url, root, token) {
 
 function drawdata(data, root)
 {
+    if(data['predstop'] <= 0.7 && data['idnext'] == null)
+        return;
     $("[id^='cnn']", root).each(
         function(){
             $(this).css('fill', '#808286');
@@ -42,6 +44,7 @@ function drawdata(data, root)
         function(){
             $(this).css('stroke', '#808286');
             $(this).css('stroke-opacity', 0.5);
+            $(this).css('stroke-width', 1.0)
         });
     $("#tspan3649", root).text('???');
     $("#tspan3655", root).text('???');
@@ -62,8 +65,8 @@ function drawdata(data, root)
     $("#tspan3620", root).text(Math.round((1.0 - data['predstop'])*100) + '%');
     $("#cp3", root).css('stroke', '#6ae5ff');
     $("#cp0", root).css('stroke', '#6ae5ff');
-    $("#cp3", root).css('stroke-width', strokew(3.0, 12.0, data['predstop']));
-    $("#cp0", root).css('stroke-width', strokew(3.0, 12.0, (1.0 - data['predstop'])));
+    $("#cp3", root).css('stroke-width', strokew(1.0, 12.0, data['predstop']));
+    $("#cp0", root).css('stroke-width', strokew(1.0, 12.0, (1.0 - data['predstop'])));
     const cnn1 =  $("#cnn1", root);
     const cnn4 =  $("#cnn4", root);
     if (data['predstop'] > 0.7)
@@ -98,9 +101,9 @@ function drawdata(data, root)
         cnn2.css('fill-opacity', 1.0);
         $("#tspan3643", root).text(Math.round(data['predfull']*100) + '%');
         $("#tspan3619", root).text(Math.round(data['predfull']*100) + '%');
-        $("#cp4", root).css('stroke-width', strokew(3.0, 12.0, data['predfull']));
+        $("#cp4", root).css('stroke-width', strokew(1.0, 12.0, data['predfull']));
         $("#cp1", root).css('stroke', '#6ae5ff');
-        $("#cp1", root).css('stroke-width', strokew(3.0, 12.0, data['predfull']));
+        $("#cp1", root).css('stroke-width', strokew(1.0, 12.0, data['predfull']));
     }
     else
     {
@@ -112,7 +115,7 @@ function drawdata(data, root)
         cnn2.css('fill-opacity', 0.5);
         $("#tspan3643", root).text(Math.round(data['predempty']*100) + '%');
         $("#tspan3619", root).text(Math.round(data['predfull']*100) + '%');
-        $("#cp4", root).css('stroke-width', strokew(3.0, 12.0, data['predempty']));
+        $("#cp4", root).css('stroke-width', strokew(1.0, 12.0, data['predempty']));
     }
     if (data['idnext'] != null)
     {
@@ -124,31 +127,31 @@ function drawdata(data, root)
                         $(this).css('display', 'none');
                     });
                 $("#cp5", root).css('stroke', '#6ae5ff');
-                $("#cp5", root).css('stroke-width', strokew(3.0, 12.0, data['predict0']));
+                $("#cp5", root).css('stroke-width', strokew(1.0, 12.0, data['predict0']));
                 break;
              case 1:
                 $("#cnn5", root).css('fill', '#f13c09');
                 $("#cnn5", root).css('fill-opacity', 1.0);
                 $("#cp6", root).css('stroke', '#f13c09');
-                $("#cp6", root).css('stroke-width', strokew(3.0, 12.0, data['predict1']));
+                $("#cp6", root).css('stroke-width', strokew(1.0, 12.0, data['predict1']));
                 break;
              case 2:
                 $("#cnn7", root).css('fill', '#f13c09');
                 $("#cnn7", root).css('fill-opacity', 1.0);
                 $("#cp7", root).css('stroke', '#f13c09');
-                $("#cp7", root).css('stroke-width', strokew(3.0, 12.0, data['predict2']));
+                $("#cp7", root).css('stroke-width', strokew(1.0, 12.0, data['predict2']));
                 break;
              case 3:
                 $("#cnn6", root).css('fill', '#6ae5ff');
                 $("#cnn6", root).css('fill-opacity', 1.0);
                 $("#cp8", root).css('stroke', '#6ae5ff');
-                $("#cp8", root).css('stroke-width', strokew(3.0, 12.0, data['predict3']));
+                $("#cp8", root).css('stroke-width', strokew(1.0, 12.0, data['predict3']));
                 break;
              case 4:
                 $("#cnn3", root).css('fill', '#6ae5ff');
                 $("#cnn3", root).css('fill-opacity', 1.0);
                 $("#cp2", root).css('stroke', '#6ae5ff');
-                $("#cp2", root).css('stroke-width', strokew(3.0, 12.0, data['predict4']));
+                $("#cp2", root).css('stroke-width', strokew(1.0, 12.0, data['predict4']));
                 break;
             default:
                 break;
