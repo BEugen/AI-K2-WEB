@@ -25,9 +25,9 @@ function getdata(url, root, token) {
 
 function drawdata(data, root)
 {
-    if((data['predstop'] <= 0.7 && data['idnext'] == null)
+    if((data['predstop'] <= 0.7 && data['idnext'] == null && data['predfull'] > data['predempty'])
         ||data == null || data.length == 0)
-        return;
+         return;
     $("[id^='cnn']", root).each(
         function(){
             $(this).css('fill', '#808286');
