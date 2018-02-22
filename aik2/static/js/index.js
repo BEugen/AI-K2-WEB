@@ -23,6 +23,66 @@ function getdata(url, root, token) {
         });
 }
 
+function getstat(url, token) {
+    $.ajax(
+        {
+            url: url,
+            data: {
+                id: 0, 'csrfmiddlewaretoken': token
+            },
+            timeout: 300000,
+            type: 'POST',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                drawstat(data);
+                window.setTimeout(function () {
+                   getstat(url, token);
+                }, 108000);
+            },
+            error: function() {
+                window.setTimeout(function () {
+                    getstat(url, token);
+                }, 108000);
+            }
+        });
+}
+
+function drawstat(data)
+{
+  let sm = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+  for(let i=0; i < 3; i++) {
+      let ind = 0;
+      for(let y=-1; y < 5; y++)
+      {
+          let v = data[i][y.toString()];
+          if( v != null) {
+              $("#s" + (i + 1) + "_" + y).text((v/60).toFixed(2) + "ч.");
+              sm[ind] += v;
+          }
+          else
+          {
+              $("#s" + (i + 1) + "_" + y).text("-");
+          }
+          ind +=1;
+      }
+  }
+  let ind = -1;
+  for (let i=0; i < sm.length; i++)
+  {
+      if(sm[i] !== 0.0) {
+          $("#s4" + "_" + ind).text((sm[i]/60).toFixed(2) + "ч.");
+      }
+      else
+      {
+          $("#s4" + "_" + ind).text("-");
+      }
+      ind +=1;
+  }
+
+}
+
+
 function drawdata(data, root)
 {
     if((data['predstop'] <= 0.7 && data['idnext'] == null && data['predfull'] > data['predempty'])

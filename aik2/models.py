@@ -1,5 +1,8 @@
 from django.db import models
-
+from django.db.models import Sum, F
+from datetime import datetime, timedelta
+from django.utils import timezone
+import pytz
 # Create your models here.
 
 
@@ -22,6 +25,7 @@ class conveyer2next(models.Model):
     predict3 = models.FloatField()
     predict4 = models.FloatField()
 
+
 class convstat(models.Model):
     id = models.UUIDField(primary_key=True)
     nclass = models.IntegerField()
@@ -33,7 +37,7 @@ class Getdata(object):
     def get_json_data(self):
         try:
             sql_val = conveyer2firstr.objects. \
-                            order_by('-stamp')[:1].all().values()
+                          order_by('-stamp')[:1].all().values()
             jsd = dict(sql_val[0])
             jsd['id'] = str(jsd['id'])
             jsd['stamp'] = jsd['stamp'].strftime("%d.%m.%Y %H:%M")
@@ -43,6 +47,28 @@ class Getdata(object):
                 jsdn['id'] = str(jsdn['id'])
                 jsd['idnext'] = jsdn
             return jsd
+        except Exception as e:
+            print(e)
+            return []
+
+
+class Getstat(object):
+    def get_json_stat(self, sdt):
+        try:
+            result = {'0': {}, '1': {}, '2': {}}
+            dtc = datetime.now()
+            dtc = datetime(dtc.year, dtc.month, dtc.day, 0, 0, 0, tzinfo=pytz.UTC)
+            for x in range(0, 3):
+                dte = dtc + timedelta(hours=8)
+                for y in range(-1, 5):
+                    sql_val = convstat.objects.filter(
+                        start__gte=dtc, end__lt=dte, nclass__exact=y, end__isnull=False).annotate(
+                        duration=F('end') - F('start')).aggregate(
+                        total=Sum('duration')
+                    )['total']
+                    result[str(x)][str(y)] = sql_val.seconds/60 if sql_val else None
+                dtc = dtc + timedelta(hours=8)
+            return result
         except Exception as e:
             print(e)
             return []
