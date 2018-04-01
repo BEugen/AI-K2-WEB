@@ -1,0 +1,90 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+<header class="featured">
+    <meta charset="UTF-8">
+    <title>Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</title>
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <div class="content-wrapper">
+        <div class="float-left">
+            <p class="site-title">Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</p>
+        </div>
+    </div>
+</header>
+<body>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix">
+        <object id="nn" type="image/svg+xml" data="{% static 'svg/nn-graph.svg' %}" width="100%" height="100%">
+         <!--   <img src="{% static 'svg/nn-graph.svg' %}" width="100%" height="100%" alt="image format png"/>-->
+        </object>
+    </section>
+    <div class="width_full">
+        <div class="width_full l-font table_header">Статистика</div>
+        <div class="width_full table_row">
+            <div class="float-left l-font table_header_cell">Параметр</div>
+            <div class="float-left l-font table_header_cell">1 смена</div>
+            <div class="float-left l-font table_header_cell">2 смена</div>
+            <div class="float-left l-font table_header_cell">3 смена</div>
+            <div class="float-left l-font table_header_cell">Сутки</div>
+        <div class="width_full table_row">
+            <div class="float-left table_left_cell">Простой конвейера</div>
+            <div id="s1_-1" class="float-left table_cell">-</div>
+            <div id="s2_-1" class="float-left table_cell">-</div>
+            <div id="s3_-1" class="float-left table_cell">-</div>
+            <div id="s4_-1" class="float-left table_cell">-</div>
+        </div>
+        <div class="width_full table_row">
+            <div class="float-left table_left_cell">Работа без материала</div>
+            <div id="s1_0" class="float-left table_cell">-</div>
+            <div id="s2_0" class="float-left table_cell">-</div>
+            <div id="s3_0" class="float-left table_cell">-</div>
+            <div id="s4_0" class="float-left table_cell">-</div>
+        </div>
+        <div class="width_full table_row">
+            <div class="float-left table_left_cell">Мало материала, мелочь, пыль</div>
+            <div id="s1_2" class="float-left table_cell table_error">-</div>
+            <div id="s2_2" class="float-left table_cell table_error">-</div>
+            <div id="s3_2" class="float-left table_cell table_error">-</div>
+            <div id="s4_2" class="float-left table_cell table_error">-</div>
+        </div>
+        <div class="width_full table_row table_error">
+            <div class="float-left table_left_cell">Плохое изображение</div>
+            <div id="s1_1" class="float-left table_cell table_error">-</div>
+            <div id="s2_1" class="float-left table_cell table_error">-</div>
+            <div id="s3_1" class="float-left table_cell table_error">-</div>
+            <div id="s4_1" class="float-left table_cell table_error">-</div>
+        </div>
+        <div class="width_full table_row">
+            <div class="float-left table_left_cell">Брикеты + мелочь</div>
+            <div id="s1_3" class="float-left table_cell table_norm">-</div>
+            <div id="s2_3" class="float-left table_cell table_norm">-</div>
+            <div id="s3_3" class="float-left table_cell table_norm">-</div>
+            <div id="s4_3" class="float-left table_cell table_norm">-</div>
+        </div>
+        <div class="width_full table_row">
+            <div class="float-left table_left_cell">Брикеты</div>
+            <div id="s1_4" class="float-left table_cell table_norm">-</div>
+            <div id="s2_4" class="float-left table_cell table_norm">-</div>
+            <div id="s3_4" class="float-left table_cell table_norm">-</div>
+            <div id="s4_4" class="float-left table_cell table_norm">-</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+            const a = document.getElementById("nn");
+            a.addEventListener("load",function(){
+                const svgDoc = a.contentDocument; //get the inner DOM of alpha.svg
+                const svgRoot  = svgDoc.documentElement;
+                getdata('/ai_json_graph', svgRoot, '{{ csrf_token }}');
+                //img.css('fill', "#6ae5ff");
+            },false);
+            getstat('/ai_json_stat', '{{ csrf_token }}');
+        })
+
+</script>
+</body>
+</html>
