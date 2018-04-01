@@ -412,3 +412,23 @@ ul#menu {
     padding-left: 1px;
     padding-right: 1px;
 }
+.chart-label
+{
+    height: 5%;
+    background-color: #595b5d;
+    text-align: center;
+    color: #eaeaea;
+}
+.chart-height
+{
+    height: 95%;
+}
+#img {
+    width: 30%;
+    height: 22%;
+    border: 2px solid #666d6e;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #3c3f41;
+    box-shadow: 0 0 20px #666d6e;
+}

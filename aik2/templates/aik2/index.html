@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="ru">
-<header class="featured height_full">
+<header>
     <meta charset="UTF-8">
     <title>Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</title>
     <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
@@ -9,7 +9,11 @@
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/index.js' %}"></script>
     <script src="{% static 'js/flot/jquery.flot.min.js' %}"></script>
-    <div id="npage" class="height_full width_full">
+     <script src="{% static 'js/flot/jquery.flot.categories.min.js' %}"></script>
+
+</header>
+<body>
+<div id="npage" class="height_full width_full">
         <div id="nmenu" class="float-left height_full">
              <div class="title-left width_full">
                 <p class="site-title">Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</p>
@@ -19,20 +23,34 @@
             </div>
         </div>
         <div id="ndraw" class="float-left height_full">
+            <div id="img">
+                <div class="width_full chart-label">Дата ??.??.???? ??:??</div>
+            </div>
 
         </div>
         <div id="nchart" class="float-left height_full">
             <div class="width_full title-predict">
+                <div class="width_full chart-label">Статистика</div>
 
             </div>
             <div class="width_full title-chart">
                 <div class="width_full char-half chart-backround char-day">
-
+                    <div class="width_full chart-label">Статистика за сутки</div>
+                    <div id="ch_all" class="width_full chart-height"></div>
                 </div>
                 <div class="width_full char-half chart-stage-container">
-                    <div class="float-left height_full chart-stage chart-backround"></div>
-                    <div class="float-left height_full chart-stage chart-backround chart-stage-center"></div>
-                    <div class="float-left height_full chart-stage chart-backround"></div>
+                    <div class="float-left height_full chart-stage chart-backround">
+                        <div class="width_full chart-label">Смена</div>
+                    <div id="ch_0" class="width_full chart-height"></div>
+                    </div>
+                    <div class="float-left height_full chart-stage chart-backround chart-stage-center">
+                        <div class="width_full chart-label">Предыущая смена</div>
+                    <div id="ch_1" class="width_full chart-height"></div>
+                    </div>
+                    <div class="float-left height_full chart-stage chart-backround">
+                        <div class="width_full chart-label">Пред. предыдущая смена</div>
+                    <div id="ch_2" class="width_full chart-height"></div>
+                    </div>
                 </div>
 
             </div>
@@ -40,8 +58,47 @@
         </div>
 
     </div>
-</header>
-<body>
-
 </body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data1 = [ ["Простой", 10]];
+        var data2 = [ ["Без мат.", 8]];
+        var data3 = [ ["Пыль", 4]];
+        var data4 = [ ["Не расп.", 17]];
+        var data5 = [ ["Брик., мелочь", 7]];
+        var data6 = [ ["Брик.", 7]];
+        var options = {
+			series: {
+				bars: {
+					show: true,
+					barWidth: 0.6,
+					align: "center"
+				}
+			},
+            colors: ["#759ebf", "#666d6e", "#ff0f3c", "#f20855", "#ef7419", "#32ff15"],
+			xaxis: {
+				mode: "categories",
+				tickLength: 0,
+                font: {
+                    color: "#efeeef"
+                }
+			},
+            yaxes:
+                [{
+                    show: true,
+                    font: {
+                        color: "#efeeef"
+                    }
+                }],
+            grid: {
+                color: "#efeeef"
+            }
+		};
+		$.plot("#ch_all", [ data1, data2, data3, data4, data5, data6], options);
+		$.plot("#ch_0", [ data1, data2, data3, data4, data5, data6], options);
+		$.plot("#ch_1", [ data1, data2, data3, data4, data5, data6], options);
+		$.plot("#ch_2", [ data1, data2, data3, data4, data5, data6], options);
+
+    });
+</script>
 </html>
