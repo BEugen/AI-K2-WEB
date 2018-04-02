@@ -229,3 +229,36 @@ function strokew(min, max, coeff) {
     return (max-min)*coeff+min;
 
 }
+
+function getdatachart(id, url, chart, options, subscribe, token)
+{
+     $.ajax(
+        {
+            url: url,
+            data: {
+                id: id, 'csrfmiddlewaretoken': token
+            },
+            timeout: 300000,
+            type: 'POST',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                drawchart(chart, options, data);
+                if(subscribe) {
+                    window.setTimeout(function () {
+                        getdatachart(id, url, chart, options, subscribe, token);
+                    }, 120000);
+                }
+            },
+            error: function() {
+                window.setTimeout(function () {
+                    getdatachart(id, url, chart, options, subscribe, token);
+                }, 120000);
+            }
+        });
+}
+
+function drawchart(chart, options, data) {
+    $.plot("#" + chart, [ data[0], data[1], data[2],
+        data[3], data[4], data[5]], options);
+}

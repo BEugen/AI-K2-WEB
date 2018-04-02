@@ -61,12 +61,12 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
-        var data1 = [ ["Простой", 10]];
-        var data2 = [ ["Без мат.", 8]];
-        var data3 = [ ["Пыль", 4]];
-        var data4 = [ ["Не расп.", 17]];
-        var data5 = [ ["Брик., мелочь", 7]];
-        var data6 = [ ["Брик.", 7]];
+        var data1 = [ ["Простой", 1]];
+        var data2 = [ ["Без мат.", 1]];
+        var data3 = [ ["Пыль", 1]];
+        var data4 = [ ["Не расп.", 1]];
+        var data5 = [ ["Брик., мелочь", 1]];
+        var data6 = [ ["Брик.", 1]];
         var options = {
 			series: {
 				bars: {
@@ -75,7 +75,7 @@
 					align: "center"
 				}
 			},
-            colors: ["#759ebf", "#666d6e", "#ff0f3c", "#f20855", "#ef7419", "#32ff15"],
+            colors: ["#759ebf", "#666d6e", "#f20855", "#ff0f3c", "#ef7419", "#32ff15"],
 			xaxis: {
 				mode: "categories",
 				tickLength: 0,
@@ -94,10 +94,14 @@
                 color: "#efeeef"
             }
 		};
-		$.plot("#ch_all", [ data1, data2, data3, data4, data5, data6], options);
-		$.plot("#ch_0", [ data1, data2, data3, data4, data5, data6], options);
-		$.plot("#ch_1", [ data1, data2, data3, data4, data5, data6], options);
-		$.plot("#ch_2", [ data1, data2, data3, data4, data5, data6], options);
+		$.plot("#ch_all", [ data1, data2, data4, data3, data5, data6], options);
+		$.plot("#ch_0", [ data1, data2, data4, data3, data5, data6], options);
+		$.plot("#ch_1", [ data1, data2, data4, data3, data5, data6], options);
+		$.plot("#ch_2", [ data1, data2, data4, data3, data5, data6], options);
+		getdatachart(0, '/ai_json_day_chart', 'ch_all', options, true, '{{ csrf_token }}');
+		getdatachart(0, '/ai_json_ses_chart', 'ch_0', options, true, '{{ csrf_token }}');
+		getdatachart(1, '/ai_json_ses_chart', 'ch_1', options, false, '{{ csrf_token }}');
+		getdatachart(2, '/ai_json_ses_chart', 'ch_2', options, false, '{{ csrf_token }}');
 
     });
 </script>
