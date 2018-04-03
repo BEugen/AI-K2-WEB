@@ -28,7 +28,9 @@
                 <div id="cam-label" class="width_full cam-label">Дата ??.??.???? ??:??</div>
                 <div id="cam"></div>
             </div>
-
+            <div class="svg-container width_full">
+                <object id="nn" type="image/svg+xml" data="{% static 'svg/graph.svg' %}" width="100%" height="100%"></object>
+            </div>
         </div>
         <div id="nchart" class="float-left height_full">
             <div class="width_full title-predict">
@@ -58,7 +60,7 @@
                     <div id="ch_3_1" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
                 <div class="stat-row">
-                    <div class="float-left stat-cell-1 stat-cell-font-l">Не распознанно</div>
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Не распознано</div>
                     <div class="float-left stat-cell-all stat-color-label stat-color-2"></div>
                     <div id="ch_0_2" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_1_2" class="float-left stat-cell-all stat-cell-font"></div>
@@ -160,7 +162,14 @@
 		getdatachart(0, '/ai_json_ses_chart', 'ch_0', options, true, '{{ csrf_token }}');
 		getdatachart(1, '/ai_json_ses_chart', 'ch_1', options, true, '{{ csrf_token }}');
 		getdatachart(2, '/ai_json_ses_chart', 'ch_2', options, true, '{{ csrf_token }}');
-        getdata('/ai_json_graph', '', '{{ csrf_token }}');
+		const a = document.getElementById("nn");
+            a.addEventListener("load",function(){
+                const svgDoc = a.contentDocument; //get the inner DOM of alpha.svg
+                const svgRoot  = svgDoc.documentElement;
+                getdata('/ai_json_graph', svgRoot, '{{ csrf_token }}');
+                //img.css('fill', "#6ae5ff");
+            },false);
+        //getdata('/ai_json_graph', '', '{{ csrf_token }}');
     });
 </script>
 </html>

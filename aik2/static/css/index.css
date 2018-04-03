@@ -512,3 +512,7 @@ ul#menu {
 .stat-color-5 {
   background-color: #32ff15;
 }
+.svg-container
+{
+    height: 60%;
+}
