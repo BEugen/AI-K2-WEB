@@ -23,14 +23,72 @@
             </div>
         </div>
         <div id="ndraw" class="float-left height_full">
+            <div class="label-sep width_full"></div>
             <div id="img">
-                <div class="width_full chart-label">Дата ??.??.???? ??:??</div>
+                <div id="cam-label" class="width_full cam-label">Дата ??.??.???? ??:??</div>
+                <div id="cam"></div>
             </div>
 
         </div>
         <div id="nchart" class="float-left height_full">
             <div class="width_full title-predict">
-                <div class="width_full chart-label">Статистика</div>
+                <div class="width_full stat-label">Статистика (ч)</div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font">Параметр</div>
+                    <div class="float-left stat-cell-all stat-cell-font">Обозн.</div>
+                    <div class="float-left stat-cell-all stat-cell-font">Смена</div>
+                    <div class="float-left stat-cell-all stat-cell-font">Пред. смена</div>
+                    <div class="float-left stat-cell-all stat-cell-font">Пред. пред. смена</div>
+                    <div class="float-left stat-cell-all stat-cell-font">Сутки</div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Простой</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-0"></div>
+                    <div id="ch_0_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_0" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Без материала</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-1"></div>
+                    <div id="ch_0_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_1" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Не распознанно</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-2"></div>
+                    <div id="ch_0_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_2" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Пыль</div>
+                    <div  class="float-left stat-cell-all stat-color-label stat-color-3"></div>
+                    <div id="ch_0_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_3" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Брикеты+мелочь</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-4"></div>
+                    <div id="ch_0_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_4" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-cell-1 stat-cell-font-l">Брикеты</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-5"></div>
+                    <div id="ch_0_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_5" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
 
             </div>
             <div class="width_full title-chart">
@@ -98,11 +156,11 @@
 		$.plot("#ch_0", [ data1, data2, data4, data3, data5, data6], options);
 		$.plot("#ch_1", [ data1, data2, data4, data3, data5, data6], options);
 		$.plot("#ch_2", [ data1, data2, data4, data3, data5, data6], options);
-		getdatachart(0, '/ai_json_day_chart', 'ch_all', options, true, '{{ csrf_token }}');
+		getdatachart(3, '/ai_json_day_chart', 'ch_all', options, true, '{{ csrf_token }}');
 		getdatachart(0, '/ai_json_ses_chart', 'ch_0', options, true, '{{ csrf_token }}');
-		getdatachart(1, '/ai_json_ses_chart', 'ch_1', options, false, '{{ csrf_token }}');
-		getdatachart(2, '/ai_json_ses_chart', 'ch_2', options, false, '{{ csrf_token }}');
-
+		getdatachart(1, '/ai_json_ses_chart', 'ch_1', options, true, '{{ csrf_token }}');
+		getdatachart(2, '/ai_json_ses_chart', 'ch_2', options, true, '{{ csrf_token }}');
+        getdata('/ai_json_graph', '', '{{ csrf_token }}');
     });
 </script>
 </html>

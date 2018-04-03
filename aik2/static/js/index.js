@@ -10,7 +10,7 @@ function getdata(url, root, token) {
             beforeSend: function () {
             },
             success: function (data) {
-                drawdata(data, root);
+                drawinfo(data, root);
                 window.setTimeout(function () {
                    getdata(url, root, token);
                 }, 30000);
@@ -244,6 +244,7 @@ function getdatachart(id, url, chart, options, subscribe, token)
             },
             success: function (data) {
                 drawchart(chart, options, data);
+                drawstattable(id, chart, data);
                 if(subscribe) {
                     window.setTimeout(function () {
                         getdatachart(id, url, chart, options, subscribe, token);
@@ -261,4 +262,57 @@ function getdatachart(id, url, chart, options, subscribe, token)
 function drawchart(chart, options, data) {
     $.plot("#" + chart, [ data[0], data[1], data[2],
         data[3], data[4], data[5]], options);
+}
+
+function drawinfo(data, root)
+{
+    $("#cam").css('background-image', 'url(data:image/jpeg;base64,' + data['img'] + ')');
+    $("#cam-label").text("Дата " + data['stamp'])
+    if (data['predstop'] > 0.7) {
+        $("#img").css('box-shadow', '0 0 40px #759ebf');
+    }
+    else
+    {
+        if (data['predfull'] < data['predempty'])
+        {
+            $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
+        }
+        else {
+            if (data['idnext'] != null) {
+                data = data['idnext'];
+                switch (data['nclass']) {
+                    case 0:
+                        $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
+                        break;
+                    case 1:
+                        $("#img").css('box-shadow', '0 0 25px 2px #f20855');
+                        break;
+                    case 2:
+                        $("#img").css('box-shadow', '0 0 25px 2px #ff0f3c');
+                        break;
+                    case 3:
+                        $("#img").css('box-shadow', '0 0 25px 2px #ef7419');
+                        break;
+                    case 4:
+                        $("#img").css('box-shadow', '0 0 25px 2px #32ff15');
+                        break;
+                }
+            }
+            else
+            {
+                $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
+            }
+        }
+    }
+}
+
+function drawstattable(id, chart, data) {
+    var ch = chart.split('_');
+    for (var i = 0; i < data.length; i++) {
+        var a = data[i][0];
+        if(a[1] !== null)
+          $("#" + ch[0] + "_" + id + "_" + i).text((a[1]).toFixed(2));
+        else
+          $("#" + ch[0] + "_" + id + "_" + i).text("-");
+    }
 }
