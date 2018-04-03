@@ -132,8 +132,10 @@ footer {
 .site-title {
     color: #eaeaea;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 1.2em;
-    margin: 5px;
+    font-size: 1.1em;
+    background-color: #595b5d;
+    padding: 5px;
+    margin-top: -5px;
 }
 
 .site-title a, .site-title a:hover, .site-title a:active {
@@ -417,6 +419,7 @@ ul#menu {
     height: 5%;
     background-color: #595b5d;
     text-align: center;
+    font-weight: bold;
     color: #eaeaea;
 }
 .label-sep
@@ -448,11 +451,13 @@ ul#menu {
     background-color: #595b5d;
     text-align: center;
     color: #eaeaea;
+    font-weight: bold;
 }
 .stat-label
  {
     height: 10%;
     background-color: #595b5d;
+    font-weight: bold;
     text-align: center;
     color: #eaeaea;
  }
@@ -473,14 +478,14 @@ ul#menu {
 {
     color: #eaeaea;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 1.0em;
+    font-size: 1.3em;
     text-align: center;
 }
 .stat-cell-font-l
 {
     color: #eaeaea;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 1.0em;
+    font-size: 1.3em;
     padding-left: 8px;
 }
 .stat-color-label
