@@ -364,7 +364,6 @@ ul#menu {
 .title-left
 {
     background-color: #3c3f41;
-    height: 15%;
 }
 .title-predict
 {
@@ -378,15 +377,30 @@ ul#menu {
 }
 .nav-item
 {
-    height: 30%;
-    background-color: #3c3f41;
+    height: 35px;
+    background-color: #2b2b2b;
+    padding-left: 20px;
+    padding-top: 10px;
 
+}
+.nav-item:hover
+{
+    color: #a6dbed;
 }
 .nav-font
 {
     color: #eaeaea;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 1.2em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.nav-panel
+{
+    height: 95%;
+}
+.nav-top
+{
+    height: 10%;
 }
 .char-half
 {
@@ -424,7 +438,7 @@ ul#menu {
 }
 .label-sep
 {
-    height: 5px;
+    height: 20px;
 }
 .chart-height
 {
@@ -481,12 +495,16 @@ ul#menu {
     font-size: 1.3em;
     text-align: center;
 }
+.stat-header
+{
+    height: 20%;
+}
 .stat-cell-font-l
 {
     color: #eaeaea;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 1.3em;
-    padding-left: 8px;
+    padding-left: 2%;
 }
 .stat-color-label
 {

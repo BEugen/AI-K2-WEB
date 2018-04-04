@@ -196,6 +196,12 @@ function getdatachart(id, url, chart, options, subscribe, token)
             beforeSend: function () {
             },
             success: function (data) {
+                if (id < 3)
+                {
+                    $("#c_" + id).text("Смена " + data[1]);
+                    $("#s_" + id).text("Смена " + data[1]);
+                    data = data[0];
+                }
                 drawchart(chart, options, data);
                 drawstattable(id, chart, data);
                 if(subscribe) {
@@ -232,8 +238,8 @@ function drawinfo(data, root)
         }
         else {
             if (data['idnext'] != null) {
-                data = data['idnext'];
-                switch (data['nclass']) {
+                var nclass = data['idnext'];
+                switch (nclass['nclass']) {
                     case 0:
                         $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
                         break;

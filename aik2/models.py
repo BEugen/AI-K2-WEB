@@ -108,7 +108,14 @@ class GetStatForChart(object):
                     total=Sum('duration')
                 )['total']
                 result.append([[t_class[str(y)], sql_val.seconds/3600 if sql_val else None]])
-            return result
+            ses = ''
+            if dtc.hour == 0:
+                ses = '№1'
+            if dtc.hour == 8:
+                ses = '№2'
+            if dtc.hour == 16:
+                ses = '№3'
+            return result, dtc.strftime("%d.%m.%y") + ' ' + ses
         except Exception as e:
             print(e)
             return []
