@@ -270,7 +270,7 @@ function drawstattable(id, chart, data) {
     var ch = chart.split('_');
     for (var i = 0; i < data.length; i++) {
         var a = data[i][0];
-        if(a[1] !== null)
+        if(a[1] !== null && a[1] !== 0.0)
           $("#" + ch[0] + "_" + id + "_" + i).text((a[1]).toFixed(2));
         else
           $("#" + ch[0] + "_" + id + "_" + i).text("-");

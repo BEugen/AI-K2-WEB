@@ -79,6 +79,11 @@ class GetStatForChart(object):
         try:
             result = []
             dtc = datetime.now()
+            dtc = datetime(dtc.year, dtc.month, dtc.day,
+                           dtc.hour, dtc.minute, dtc.second, tzinfo=pytz.UTC)
+            last_stat = convstat.objects.filter(
+                start__lte=dtc, end__isnull=True).order_by('-start').annotate(
+                duration=dtc - F('start')).all()[:1].values()[0]
             dtc = datetime(dtc.year, dtc.month, dtc.day, 0, 0, 0, tzinfo=pytz.UTC)
             dte = datetime(dtc.year, dtc.month, dtc.day, 23, 59, 59, tzinfo=pytz.UTC)
             for y in range(-1, 5):
@@ -87,7 +92,12 @@ class GetStatForChart(object):
                     duration=F('end') - F('start')).aggregate(
                     total=Sum('duration')
                 )['total']
-                result.append([[t_class[str(y)], sql_val.seconds/3600 if sql_val else None]])
+                add_seconds = 0
+                if last_stat and y == last_stat['nclass']:
+                    add_seconds = last_stat['duration'].seconds
+                result.append([[t_class[str(y)],
+                                (sql_val.seconds + add_seconds)/3600 if sql_val else add_seconds/3600
+                                if add_seconds != 0 else None]])
             return result
         except Exception as e:
             print(e)
@@ -97,6 +107,11 @@ class GetStatForChart(object):
         try:
             result = []
             dtc = datetime.now()
+            dtc = datetime(dtc.year, dtc.month, dtc.day,
+                           dtc.hour, dtc.minute, dtc.second, tzinfo=pytz.UTC)
+            last_stat = convstat.objects.filter(
+                start__lte=dtc, end__isnull=True).order_by('-start').annotate(
+                    duration=dtc - F('start')).all()[:1].values()[0]
             hour = int(dtc.hour/8)*8
             dtc = datetime(dtc.year, dtc.month, dtc.day, hour, 0, 0, tzinfo=pytz.UTC)
             dtc = dtc - timedelta(hours=number*8)
@@ -107,7 +122,13 @@ class GetStatForChart(object):
                     duration=F('end') - F('start')).aggregate(
                     total=Sum('duration')
                 )['total']
-                result.append([[t_class[str(y)], sql_val.seconds/3600 if sql_val else None]])
+                add_seconds = 0
+                if last_stat and y == last_stat['nclass']:
+                    add_seconds = last_stat['duration'].seconds
+                result.append([[t_class[str(y)],
+                                (sql_val.seconds + add_seconds)/3600 if sql_val else add_seconds/3600
+                                if add_seconds != 0 else None]])
+
             ses = ''
             if dtc.hour == 0:
                 ses = '№1'
