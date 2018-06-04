@@ -29,6 +29,7 @@ class conveyer2next(models.Model):
 class conveyer2status(models.Model):
     id = models.UUIDField(primary_key=True)
     tstamp = models.DateTimeField()
+    stop = models.FloatField()
     empty = models.FloatField()
     imerror = models.FloatField()
     full = models.FloatField()
@@ -36,6 +37,15 @@ class conveyer2status(models.Model):
     snn2 = models.TextField()
     snn3 = models.TextField()
     snnclass = models.FloatField()
+    img = models.TextField()
+    tfile = models.DateTimeField()
+
+class conveyer2imgcrop(models.Model):
+    tstamp = models.DateTimeField()
+    x1 = models.FloatField()
+    x2 = models.FloatField()
+    y1 = models.FloatField()
+    y2 = models.FloatField()
 
 
 class convstat(models.Model):
@@ -135,7 +145,7 @@ class GetStatForChart(object):
                     total=Sum('duration')
                 )['total']
                 add_seconds = 0
-                if last_stat and y == last_stat['nclass']:
+                if last_stat and y == last_stat['nclass'] and number == 0:
                     add_seconds = last_stat['duration'].seconds
                 result.append([[t_class[str(y)],
                                 (sql_val.seconds + add_seconds)/3600 if sql_val else add_seconds/3600
