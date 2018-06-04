@@ -26,6 +26,18 @@ class conveyer2next(models.Model):
     predict4 = models.FloatField()
 
 
+class conveyer2status(models.Model):
+    id = models.UUIDField(primary_key=True)
+    tstamp = models.DateTimeField()
+    empty = models.FloatField()
+    imerror = models.FloatField()
+    full = models.FloatField()
+    snn1 = models.TextField()
+    snn2 = models.TextField()
+    snn3 = models.TextField()
+    snnclass = models.FloatField()
+
+
 class convstat(models.Model):
     id = models.UUIDField(primary_key=True)
     nclass = models.IntegerField()
