@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from aik2.models import Getdata, Getstat, GetStatForChart
+from aik2.models import Getdata, Getstat, GetStatForChart, GetDataRecognize
 from django.shortcuts import render, redirect, HttpResponse, render_to_response, HttpResponseRedirect
 import json
 
@@ -7,6 +7,7 @@ import json
 DataForGraph = Getdata()
 DataForStat = Getstat()
 DataForChart = GetStatForChart()
+DataRecognize = GetDataRecognize()
 
 
 def index(request):
@@ -18,6 +19,18 @@ def ai_json_graph(request):
         if request.method == 'POST':
             if request.is_ajax():
                 return HttpResponse(json.dumps(DataForGraph.get_json_data()), content_type="application/json")
+        return HttpResponse(json.dumps([]), content_type="application/json")
+    except Exception as e:
+        error = {'error': e}
+        return HttpResponse(json.dumps(error), content_type="application/json")
+
+
+def ai_json_recognize(request):
+    try:
+        if request.method == 'POST':
+            if request.is_ajax():
+                dumps = json.dumps(DataRecognize.get_json_data())
+                return HttpResponse(dumps, content_type="application/json")
         return HttpResponse(json.dumps([]), content_type="application/json")
     except Exception as e:
         error = {'error': e}

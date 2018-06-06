@@ -85,8 +85,7 @@ function drawstat(data)
 
 function drawdata(data, root)
 {
-    if((data['predstop'] <= 0.7 && data['idnext'] == null && data['predfull'] > data['predempty'])
-        ||data == null || data.length == 0)
+    if(data == null)
          return;
     $("[id^='line']", root).each(
         function(){
@@ -113,23 +112,20 @@ function drawdata(data, root)
             $(this).css('fill', '#747474');
         });
 
-    $("#line-0",root).css('stroke', '#eaeaea');
-    $("#line-1", root).css('stroke', '#eaeaea');
-    $("#circle-0", root).css('stroke', '#eaeaea');
-    $("#bcircle-0", root).css('display', 'inline');
-    if (data['predstop'] > 0.7)
-    {
-        return;
-    }
-    else
-    {
-        $("[id^='cce']", root).each(
-        function(){
-            $(this).css('fill', '#32f90a');
-        });
+    if (data['snnclass'] !== 1) {
+        $("#line-0", root).css('stroke', '#eaeaea');
+        $("#line-1", root).css('stroke', '#eaeaea');
+        $("#circle-0", root).css('stroke', '#eaeaea');
+        $("#bcircle-0", root).css('display', 'inline');
+        if (data['stop'] <= 0.7) {
+            $("[id^='cce']", root).each(
+                function () {
+                    $(this).css('fill', '#32f90a');
+                });
+        }
     }
     const br = $("[id^='br']", root);
-    if (data['predfull'] > data['predempty']) {
+    if (data['full'] > data['empty'] && data['snnclass'] !== 1) {
         br.each(
         function(){
             $(this).css('display', 'inline');
@@ -142,39 +138,35 @@ function drawdata(data, root)
             $(this).css('display', 'none');
         });
     }
-    if (data['idnext'] != null)
-    {
-        data = data['idnext'];
-        switch (data['nclass']) {
-            case 0:
-                br.each(
-                    function () {
-                        $(this).css('display', 'none');
-                    });
-                break;
-             case 1:
-                $("#line-6", root).css('stroke', '#f20855');
-                $("#circle-4", root).css('stroke', '#f20855');
-                $("#bcircle-4", root).css('display', 'inline');
-                break;
-             case 2:
-                $("#line-3", root).css('stroke', '#ff0f3c');
-                $("#circle-1", root).css('stroke', '#ff0f3c');
-                $("#bcircle-1", root).css('display', 'inline');
-                break;
-             case 3:
-                $("#line-4", root).css('stroke', '#ef7419');
-                $("#circle-2", root).css('stroke', '#ef7419');
-                $("#bcircle-2", root).css('display', 'inline');
-                break;
-             case 4:
-                $("#line-5", root).css('stroke', '#32ff15');
-                $("#circle-3", root).css('stroke', '#32ff15');
-                $("#bcircle-3", root).css('display', 'inline');
-                break;
-            default:
-                break;
-        }
+    switch (data['snnclass']) {
+        case 0:
+            br.each(
+                function () {
+                    $(this).css('display', 'none');
+                });
+            break;
+        case 1:
+            $("#line-6", root).css('stroke', '#f20855');
+            $("#circle-4", root).css('stroke', '#f20855');
+            $("#bcircle-4", root).css('display', 'inline');
+            break;
+        case 2:
+            $("#line-3", root).css('stroke', '#ff0f3c');
+            $("#circle-1", root).css('stroke', '#ff0f3c');
+            $("#bcircle-1", root).css('display', 'inline');
+            break;
+        case 3:
+            $("#line-4", root).css('stroke', '#ef7419');
+            $("#circle-2", root).css('stroke', '#ef7419');
+            $("#bcircle-2", root).css('display', 'inline');
+            break;
+        case 4:
+            $("#line-5", root).css('stroke', '#32ff15');
+            $("#circle-3", root).css('stroke', '#32ff15');
+            $("#bcircle-3", root).css('display', 'inline');
+            break;
+        default:
+            break;
     }
 }
 
@@ -202,7 +194,7 @@ function getdatachart(id, url, chart, options, subscribe, token)
                     $("#s_" + id).text("Смена " + data[1]);
                     data = data[0];
                 }
-                drawchart(chart, options, data);
+                drawchart(id, chart, options, data);
                 drawstattable(id, chart, data);
                 if(subscribe) {
                     window.setTimeout(function () {
@@ -218,7 +210,14 @@ function getdatachart(id, url, chart, options, subscribe, token)
         });
 }
 
-function drawchart(chart, options, data) {
+function drawchart(id, chart, options, data) {
+    options['yaxes'][0]['min'] = 0.0;
+    options['yaxes'][0]['max'] = 24.5;
+    if(id < 3)
+    {
+        options['yaxes'][0]['min'] = 0.0;
+        options['yaxes'][0]['max'] = 8.5;
+    }
     $.plot("#" + chart, [ data[0], data[1], data[2],
         data[3], data[4], data[5]], options);
 }
@@ -226,41 +225,40 @@ function drawchart(chart, options, data) {
 function drawinfo(data, root)
 {
     $("#cam").css('background-image', 'url(data:image/jpeg;base64,' + data['img'] + ')');
-    $("#cam-label").text("Дата " + data['stamp'])
-    if (data['predstop'] > 0.7) {
+    $("#cam-label").text("Дата " + data['tstamp']);
+    if (data['stop'] > 0.7 && data['snnclass'] !== 1) {
         $("#img").css('box-shadow', '0 0 40px #759ebf');
     }
     else
     {
-        if (data['predfull'] < data['predempty'])
+        if (data['full'] < data['empty'] && data['snnclass'] !== 1)
         {
             $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
         }
         else {
-            if (data['idnext'] != null) {
-                var nclass = data['idnext'];
-                switch (nclass['nclass']) {
-                    case 0:
-                        $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
-                        break;
-                    case 1:
-                        $("#img").css('box-shadow', '0 0 25px 2px #f20855');
-                        break;
-                    case 2:
-                        $("#img").css('box-shadow', '0 0 25px 2px #ff0f3c');
-                        break;
-                    case 3:
-                        $("#img").css('box-shadow', '0 0 25px 2px #ef7419');
-                        break;
-                    case 4:
-                        $("#img").css('box-shadow', '0 0 25px 2px #32ff15');
-                        break;
-                }
+            //    if (data['idnext'] != null) {
+            switch (data['snnclass']) {
+                case 0:
+                    $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
+                    break;
+                case 1:
+                    $("#img").css('box-shadow', '0 0 25px 2px #f20855');
+                    break;
+                case 2:
+                    $("#img").css('box-shadow', '0 0 25px 2px #ff0f3c');
+                    break;
+                case 3:
+                    $("#img").css('box-shadow', '0 0 25px 2px #ef7419');
+                    break;
+                case 4:
+                    $("#img").css('box-shadow', '0 0 25px 2px #32ff15');
+                    break;
             }
-            else
-            {
-                $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
-            }
+            //   }
+            //   else
+            //   {
+            //        $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
+            //    }
         }
     }
     drawdata(data, root)

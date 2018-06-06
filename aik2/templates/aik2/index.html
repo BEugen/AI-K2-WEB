@@ -39,7 +39,7 @@
         </div>
         <div id="nchart" class="float-left height_full">
             <div class="width_full title-predict">
-                <div class="width_full stat-label">Статистика (ч)</div>
+                <div class="width_full stat-label">Статистика (час)</div>
                 <div class="stat-header">
                     <div class="float-left stat-cell-1 stat-cell-font">Параметр</div>
                     <div class="float-left stat-cell-all stat-cell-font">Обозн.</div>
@@ -159,6 +159,7 @@
                 color: "#efeeef"
             }
 		};
+
 		$.plot("#ch_all", [ data1, data2, data4, data3, data5, data6], options);
 		$.plot("#ch_0", [ data1, data2, data4, data3, data5, data6], options);
 		$.plot("#ch_1", [ data1, data2, data4, data3, data5, data6], options);
@@ -171,7 +172,7 @@
             a.addEventListener("load",function(){
                 const svgDoc = a.contentDocument; //get the inner DOM of alpha.svg
                 const svgRoot  = svgDoc.documentElement;
-                getdata('/ai_json_graph', svgRoot, '{{ csrf_token }}');
+                getdata('/ai_json_recognize', svgRoot, '{{ csrf_token }}');
                 //img.css('fill', "#6ae5ff");
             },false);
         //getdata('/ai_json_graph', '', '{{ csrf_token }}');

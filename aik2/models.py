@@ -73,6 +73,19 @@ class Getdata(object):
             print(e)
             return []
 
+class GetDataRecognize(object):
+    def get_json_data(self):
+        try:
+            sql_val = conveyer2status.objects. \
+                          order_by('-tstamp')[:1].all().values()
+            jsd = dict(sql_val[0])
+            jsd['id'] = str(jsd['id'])
+            jsd['tstamp'] = jsd['tstamp'].strftime("%d.%m.%Y %H:%M")
+            jsd['tfile'] = jsd['tfile'].strftime("%d.%m.%Y %H:%M")
+            return jsd
+        except Exception as e:
+            print(e)
+            return []
 
 class Getstat(object):
     def get_json_stat(self, sdt):
