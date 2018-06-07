@@ -123,6 +123,10 @@ function drawdata(data, root)
                     $(this).css('fill', '#32f90a');
                 });
         }
+        else
+        {
+            return;
+        }
     }
     const br = $("[id^='br']", root);
     if (data['full'] > data['empty'] && data['snnclass'] !== 1) {
