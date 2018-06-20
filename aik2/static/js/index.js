@@ -5,7 +5,7 @@ function getdata(url, root, token) {
             data: {
                 id: 0, 'csrfmiddlewaretoken': token
             },
-            timeout: 300000,
+            timeout: 100000,
             type: 'POST',
             beforeSend: function () {
             },
@@ -13,12 +13,12 @@ function getdata(url, root, token) {
                 drawinfo(data, root);
                 window.setTimeout(function () {
                    getdata(url, root, token);
-                }, 30000);
+                }, 10000);
             },
             error: function() {
                 window.setTimeout(function () {
                     getdata(url, root, token);
-                }, 30000);
+                }, 10000);
             }
         });
 }
@@ -117,7 +117,7 @@ function drawdata(data, root)
         $("#line-1", root).css('stroke', '#eaeaea');
         $("#circle-0", root).css('stroke', '#eaeaea');
         $("#bcircle-0", root).css('display', 'inline');
-        if (data['stop'] <= 0.85) {
+        if (data['stop'] <= 0.95) {
             $("[id^='cce']", root).each(
                 function () {
                     $(this).css('fill', '#32f90a');
@@ -230,7 +230,7 @@ function drawinfo(data, root)
 {
     $("#cam").css('background-image', 'url(data:image/jpeg;base64,' + data['img'] + ')');
     $("#cam-label").text("Дата " + data['tstamp']);
-    if (data['stop'] > 0.85 && data['snnclass'] !== 1) {
+    if (data['stop'] > 0.95 && data['snnclass'] !== 1) {
         $("#img").css('box-shadow', '0 0 40px #759ebf');
     }
     else

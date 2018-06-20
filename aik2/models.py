@@ -62,7 +62,7 @@ class Getdata(object):
                           order_by('-stamp')[:1].all().values()
             jsd = dict(sql_val[0])
             jsd['id'] = str(jsd['id'])
-            jsd['stamp'] = jsd['stamp'].strftime("%d.%m.%Y %H:%M")
+            jsd['stamp'] = jsd['stamp'].strftime("%d.%m.%Y %H:%M:%S")
             if jsd['idnext'] is not None:
                 sql_val_n = conveyer2next.objects.filter(id__exact=str(jsd['idnext'])).values()
                 jsdn = dict(sql_val_n[0])
@@ -80,8 +80,8 @@ class GetDataRecognize(object):
                           order_by('-tstamp')[:1].all().values()
             jsd = dict(sql_val[0])
             jsd['id'] = str(jsd['id'])
-            jsd['tstamp'] = jsd['tstamp'].strftime("%d.%m.%Y %H:%M")
-            jsd['tfile'] = jsd['tfile'].strftime("%d.%m.%Y %H:%M")
+            jsd['tstamp'] = jsd['tstamp'].strftime("%d.%m.%Y %H:%M:%S")
+            jsd['tfile'] = jsd['tfile'].strftime("%d.%m.%Y %H:%M:%S")
             return jsd
         except Exception as e:
             print(e)
