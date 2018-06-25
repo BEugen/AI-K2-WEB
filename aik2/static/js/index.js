@@ -1,3 +1,5 @@
+var tmdata = null;
+var tmstat = null;
 function getdata(url, root, token) {
     $.ajax(
         {
@@ -11,12 +13,12 @@ function getdata(url, root, token) {
             },
             success: function (data) {
                 drawinfo(data, root);
-                window.setTimeout(function () {
+                tmdata = window.setTimeout(function () {
                    getdata(url, root, token);
                 }, 10000);
             },
             error: function() {
-                window.setTimeout(function () {
+                tmdata = window.setTimeout(function () {
                     getdata(url, root, token);
                 }, 10000);
             }
@@ -36,12 +38,12 @@ function getstat(url, token) {
             },
             success: function (data) {
                 drawstat(data);
-                window.setTimeout(function () {
+                tmstat = window.setTimeout(function () {
                    getstat(url, token);
                 }, 108000);
             },
             error: function() {
-                window.setTimeout(function () {
+                tmstat = window.setTimeout(function () {
                     getstat(url, token);
                 }, 108000);
             }

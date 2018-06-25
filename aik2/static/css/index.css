@@ -395,7 +395,7 @@ ul#menu {
     padding-top: 10px;
 
 }
-.nav-item:hover
+.nav-item:hover, .nav-item-def:hover
 {
     color: #a6dbed;
 }
