@@ -11,7 +11,15 @@ DataRecognize = GetDataRecognize()
 
 
 def index(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            id = int(request.POST['id'])
+            template = 'aik2/chartform.html'
+            if id == 1:
+                template = 'aik2/statform.html'
+            return render(request, template, {})
     return render(request, 'aik2/index.html', {})
+
 
 
 def ai_json_graph(request):

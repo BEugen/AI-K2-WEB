@@ -356,7 +356,11 @@ ul#menu {
 {
     width: 49%;
 }
-
+#nstat
+{
+    width: 88%;
+    padding-left: 10px;
+}
 #npage
 {
     background-color: #2b2b2b;
@@ -379,6 +383,14 @@ ul#menu {
 {
     height: 35px;
     background-color: #2b2b2b;
+    padding-left: 20px;
+    padding-top: 10px;
+
+}
+.nav-item-def
+{
+    height: 35px;
+    background-color: #494b4d;
     padding-left: 20px;
     padding-top: 10px;
 

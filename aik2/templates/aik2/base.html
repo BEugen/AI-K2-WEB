@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+<header>
+    <meta charset="UTF-8">
+    <title>Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</title>
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/flot/jquery.flot.min.js' %}"></script>
+     <script src="{% static 'js/flot/jquery.flot.categories.min.js' %}"></script>
+
+</header>
+<body>
+<div id="npage" class="height_full width_full">
+        <div id="nmenu" class="float-left height_full">
+            {% block menu %}{% endblock menu %}
+        </div>
+<form id="fajax" action="" method="POST" class="dynamic-form height_full width_full">
+    {% block main %}{% endblock main %}
+    </form>
+    </div>
+</body>
+</html>
