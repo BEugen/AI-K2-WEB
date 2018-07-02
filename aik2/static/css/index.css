@@ -546,3 +546,131 @@ ul#menu {
 {
     height: 60%;
 }
+
+/*Stat form*/
+.stat-label-form
+ {
+    height: 10%;
+    background-color: #595b5d;
+    font-weight: bold;
+    text-align: center;
+    color: #eaeaea;
+
+ }
+.stat-label-font-form
+{
+   font-size: 1.2em;
+}
+.stat-row-form
+ {
+    height: 12%;
+    width: 100%;
+ }
+.stat-cell-1-form
+{
+    width:  25%;
+}
+.stat-cell-all-form
+{
+    width: 15%;
+}
+.stat-cell-font-form
+{
+    color: #eaeaea;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.5em;
+    text-align: center;
+}
+.stat-header-form
+{
+    height: 20%;
+}
+.stat-cell-font-l-form
+{
+    color: #eaeaea;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.5em;
+    padding-left: 2%;
+
+}
+.stat-color-label-form
+{
+    height: 50%;
+    width: 5%;
+    border: 1px solid #eaeaea;
+    margin-left: 3%;
+    margin-right: 4%;
+}
+.stat-color-form-0 {
+  background-color: #759ebf
+}
+.stat-color-form-1 {
+  background-color: #666d6e;
+}
+.stat-color-form-2 {
+  background-color: #f20855;
+}
+.stat-color-form-3 {
+  background-color: #ff0f3c;
+}
+.stat-color-form-4 {
+  background-color: #ef7419;
+}
+.stat-color-form-5 {
+  background-color: #32ff15;
+}
+
+.stat-toolbox-date-form {
+    background-color: #595b5d;
+    border: none;
+    width: 135px;
+    color: #f5f5f5;
+    margin-left: 10px;
+    outline: none;
+}
+.stat-toolbox-header-form
+{
+    height: 40px;
+    background-color: #595b5d;
+    font-weight: bold;
+    text-align: center;
+    color: #eaeaea;
+    margin-left: 5px;
+}
+.stat-chart-label-form
+{
+    height: 7%;
+    background-color: #595b5d;
+    text-align: center;
+    font-weight: bold;
+    color: #eaeaea;
+}
+.stat-chart-half-form
+{
+    height: 49%;
+}
+.stat-chart-stage-form
+{
+    width: 32.9%;
+    margin: 2.7px;
+}
+.stat-toolbox-stub-form
+{
+    width: 10%;
+}
+.stat-toolbox-calendar-button-form
+{
+    width: 32px;
+    height: 32px;
+    border: #595b5d solid 2px;
+    background: url("../images/calendar.png") no-repeat;
+
+}
+.stat-toolbox-calendar-button-form:hover
+{
+    border: #a6dbed solid 2px;
+}
+.stat-toolbox-margin-form
+{
+    margin-left: 5%;
+}

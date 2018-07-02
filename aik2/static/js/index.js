@@ -280,3 +280,37 @@ function drawstattable(id, chart, data) {
           $("#" + ch[0] + "_" + id + "_" + i).text("-");
     }
 }
+
+function getDays() {
+    var today = new Date();
+    var result = new Date(today);
+    result.setDate(result.getDate() - 1);
+    var days = result.getDate();
+    var month = (result.getMonth()<10?'0':'') + result.getMonth();
+    var years = result.getFullYear();
+  return days + '.' + month + '.' + years;
+}
+
+function gestatdata(url, st, en, token) {
+    $.ajax(
+        {
+            url: url,
+            data: {
+                st: st, en: en, 'csrfmiddlewaretoken': token
+            },
+            timeout: 100000,
+            type: 'POST',
+            beforeSend: function () {
+            },
+            success: function (data) {
+               setstat(data);
+            },
+            error: function() {
+            }
+        });
+}
+
+function setstat(data)
+{
+
+}
