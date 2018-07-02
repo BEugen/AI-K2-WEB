@@ -301,11 +301,14 @@ function gestatdata(url, st, en, token) {
             timeout: 100000,
             type: 'POST',
             beforeSend: function () {
+                $("#wait").show();
             },
             success: function (data) {
+                $("#wait").hide();
                setstat(data);
             },
             error: function() {
+                 $("#wait").hide();
             }
         });
 }

@@ -140,10 +140,12 @@
 		getdatachart(1, '/ai_json_ses_chart', 'ch_1', options, true, '{{ csrf_token }}');
 		getdatachart(2, '/ai_json_ses_chart', 'ch_2', options, true, '{{ csrf_token }}');
 		const a = document.getElementById("nn");
-            a.addEventListener("load",function(){
+		var listener = function(){
                 const svgDoc = a.contentDocument;
                 const svgRoot  = svgDoc.documentElement;
                 getdata('/ai_json_recognize', svgRoot, '{{ csrf_token }}');
-            },false);
+            }
+		a.removeEventListener("load", listener, false);
+        a.addEventListener("load", listener, false);
     });
 </script>

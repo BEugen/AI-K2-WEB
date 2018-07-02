@@ -192,3 +192,43 @@ class GetStatForChart(object):
         except Exception as e:
             print(e)
             return []
+
+    def get_json_fullstat(self, st, en):
+        try:
+            result = {0: {}, 1: {}, 2: {}, 3: {}}
+            chart_result = []
+            dts = datetime.strptime(st, "%d.%m.%Y")
+            dte = datetime.strptime(en, "%d.%m.%Y")
+            dts = datetime(dts.year, dts.month, dts.day, 0, 0, 0, tzinfo=pytz.UTC)
+            dte = datetime(dte.year, dte.month, dte.day, 23, 59, 59, tzinfo=pytz.UTC)
+            sesion = 0
+            while dts < dte:
+                for y in range(-1, 5):
+                    sql_val = convstat.objects.filter(
+                        start__gte=dts, end__lt=(dts + timedelta(hours=8)),
+                        nclass__exact=y, end__isnull=False).annotate(
+                        duration=F('end') - F('start')).aggregate(
+                        total=Sum('duration')
+                    )['total']
+                    k = str(y)
+                    if sesion not in result or k not in result[sesion]:
+                        result[sesion][k] = sql_val.seconds / 3600 if sql_val else 0
+                    else:
+                        result[sesion][k] += sql_val.seconds / 3600 if sql_val else 0
+                    if 3 not in result or k not in result[3]:
+                        result[3][k] = sql_val.seconds / 3600 if sql_val else 0
+                    else:
+                        result[3][k] += sql_val.seconds / 3600 if sql_val else 0
+                sesion += 1
+                dts = dts + timedelta(hours=8)
+                if sesion > 2:
+                    sesion = 0
+            for i in range(0, 4):
+                t = []
+                for k in range(-1, 5):
+                    t.append([[t_class[str(k)], result[i][str(k)]]])
+                chart_result.append(t)
+            return chart_result
+        except Exception as e:
+            print(e)
+            return []

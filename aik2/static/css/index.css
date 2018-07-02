@@ -666,11 +666,39 @@ ul#menu {
     background: url("../images/calendar.png") no-repeat;
 
 }
-.stat-toolbox-calendar-button-form:hover
+.stat-toolbox-update-button-form
+{
+    margin-left: 1%;
+    width: 32px;
+    height: 32px;
+    border: #595b5d solid 2px;
+    background: url("../images/update.png") no-repeat;
+
+}
+.stat-toolbox-update-button-form:hover, .stat-toolbox-calendar-button-form:hover
 {
     border: #a6dbed solid 2px;
 }
 .stat-toolbox-margin-form
 {
     margin-left: 5%;
+}
+
+.stat-error-color {
+  color: #f20855;
+}
+
+.tool_wait {
+    background: url("../images/wait.gif") no-repeat;
+    display: none;
+    text-align: center;
+    vertical-align: middle;
+    width: 250px;
+    height: 100px;
+    position:absolute;
+    top:70%;
+    left:50%;
+    margin-top:-185px;
+    margin-left: -55px;
+    z-index: 300;
 }
