@@ -1,7 +1,10 @@
 var tmdata = null;
-var tmstat = null;
+var tmstat = [];
+var achart = null;
+var astat = null;
+
 function getdata(url, root, token) {
-    $.ajax(
+   astat =  $.ajax(
         {
             url: url,
             data: {
@@ -183,7 +186,7 @@ function strokew(min, max, coeff) {
 
 function getdatachart(id, url, chart, options, subscribe, token)
 {
-     $.ajax(
+     achart = $.ajax(
         {
             url: url,
             data: {
@@ -203,13 +206,13 @@ function getdatachart(id, url, chart, options, subscribe, token)
                 drawchart(id, chart, options, data);
                 drawstattable(id, chart, data);
                 if(subscribe) {
-                    window.setTimeout(function () {
+                    tmstat[id] = window.setTimeout(function () {
                         getdatachart(id, url, chart, options, subscribe, token);
                     }, 120000);
                 }
             },
             error: function() {
-                window.setTimeout(function () {
+                tmstat[id] = window.setTimeout(function () {
                     getdatachart(id, url, chart, options, subscribe, token);
                 }, 120000);
             }
@@ -286,12 +289,13 @@ function getDays() {
     var result = new Date(today);
     result.setDate(result.getDate() - 1);
     var days = result.getDate();
-    var month = (result.getMonth()<10?'0':'') + result.getMonth();
+    var month = result.getMonth() + 1;
+    month = (month<10?'0':'') + month;
     var years = result.getFullYear();
   return days + '.' + month + '.' + years;
 }
 
-function gestatdata(url, st, en, token) {
+function gestatdata(url, st, en, token, options) {
     $.ajax(
         {
             url: url,
@@ -305,7 +309,7 @@ function gestatdata(url, st, en, token) {
             },
             success: function (data) {
                 $("#wait").hide();
-               setstat(data);
+               setstat(data, options);
             },
             error: function() {
                  $("#wait").hide();
@@ -313,7 +317,25 @@ function gestatdata(url, st, en, token) {
         });
 }
 
-function setstat(data)
+function setstat(data, options)
 {
-
+  for (var i = 0; i < data.length && i < 4; i++) {
+      var chart = 'ch_';
+      if (i < 3) {
+          chart += i;
+      }
+      else {
+          chart += 'all';
+      }
+      var tdata = data[i];
+      drawstattable(i, chart, tdata);
+      options['yaxes'][0]['min'] = 0.0;
+      options['yaxes'][0]['max'] = data[4][0][1];
+      if (i < 3) {
+          options['yaxes'][0]['min'] = 0.0;
+          options['yaxes'][0]['max'] = data[4][0][0];
+      }
+      $.plot("#" + chart, [tdata[0], tdata[1], tdata[2],
+          tdata[3], tdata[4], tdata[5]], options);
+  }
 }

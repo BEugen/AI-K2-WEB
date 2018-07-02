@@ -3,7 +3,7 @@ from django.db.models import Sum, F
 from datetime import datetime, timedelta
 from django.utils import timezone
 import pytz
-import logging
+import math
 
 
 # Create your models here.
@@ -202,6 +202,8 @@ class GetStatForChart(object):
             dts = datetime(dts.year, dts.month, dts.day, 0, 0, 0, tzinfo=pytz.UTC)
             dte = datetime(dte.year, dte.month, dte.day, 23, 59, 59, tzinfo=pytz.UTC)
             sesion = 0
+            max_all = 1.0
+            max_ses = 1.0
             while dts < dte:
                 for y in range(-1, 5):
                     sql_val = convstat.objects.filter(
@@ -211,14 +213,19 @@ class GetStatForChart(object):
                         total=Sum('duration')
                     )['total']
                     k = str(y)
+                    val = sql_val.seconds / 3600 if sql_val else 0
                     if sesion not in result or k not in result[sesion]:
-                        result[sesion][k] = sql_val.seconds / 3600 if sql_val else 0
+                        result[sesion][k] = val
+                        max_ses = max_ses if max_ses > val else val
                     else:
-                        result[sesion][k] += sql_val.seconds / 3600 if sql_val else 0
+                        result[sesion][k] += val
+                        max_ses = max_ses if max_ses > (result[sesion][k] + val) else (result[sesion][k] + val)
                     if 3 not in result or k not in result[3]:
-                        result[3][k] = sql_val.seconds / 3600 if sql_val else 0
+                        result[3][k] = val
+                        max_all = max_all if max_all > val else val
                     else:
-                        result[3][k] += sql_val.seconds / 3600 if sql_val else 0
+                        result[3][k] += val
+                        max_all = max_all if max_all > (result[3][k] + val) else (result[3][k] + val)
                 sesion += 1
                 dts = dts + timedelta(hours=8)
                 if sesion > 2:
@@ -228,6 +235,9 @@ class GetStatForChart(object):
                 for k in range(-1, 5):
                     t.append([[t_class[str(k)], result[i][str(k)]]])
                 chart_result.append(t)
+            max_ses = math.floor(max_ses*0.10 + max_ses)
+            max_all = math.floor(max_all*0.10 + max_all)
+            chart_result.append([[max_ses, max_all]])
             return chart_result
         except Exception as e:
             print(e)

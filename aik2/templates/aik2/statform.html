@@ -13,7 +13,7 @@
         </div>
 
         <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
-            Дата окончания:
+            конец:
         </div>
         <div class="float-right stat-toolbox-calendar-button-form" id="button_start">
         </div>
@@ -21,8 +21,11 @@
             <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_start"
                    readonly="True" type="text" value="??.??.????">
         </div>
-        <div class="float-right stat-cell-font-form">
-            Дата начала:
+        <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            начало:
+        </div>
+        <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            Период:
         </div>
     </div>
             <div class="width_full title-predict">
@@ -33,7 +36,7 @@
                     <div id="s_0" class="float-left stat-cell-all-form stat-cell-font-form">Смена №1</div>
                     <div id="s_1" class="float-left stat-cell-all-form stat-cell-font-form">Смена №2</div>
                     <div id="s_2" class="float-left stat-cell-all-form stat-cell-font-form">Смена №3</div>
-                    <div class="float-left stat-cell-all-form stat-cell-font-form">Сутки</div>
+                    <div class="float-left stat-cell-all-form stat-cell-font-form">Суммарно</div>
                 </div>
                 <div class="stat-row-form">
                     <div class="float-left stat-cell-1-form stat-cell-font-l-form">Простой</div>
@@ -87,7 +90,7 @@
             </div>
             <div class="width_full title-chart">
                 <div class="width_full stat-chart-half-form chart-backround char-day">
-                    <div class="width_full stat-chart-label-form stat-label-font-form">Статистика за</div>
+                    <div class="width_full stat-chart-label-form stat-label-font-form">Суммарно</div>
                     <div id="ch_all" class="width_full chart-height"></div>
                 </div>
                 <div class="width_full stat-chart-half-form chart-stage-container">
@@ -133,7 +136,44 @@
                 $(this).val(dateText);
             }
          });
-         gestatdata('ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}');
+         var options = {
+			series: {
+				bars: {
+					show: true,
+					barWidth: 0.6,
+					align: "center"
+				}
+			},
+            colors: ["#759ebf", "#666d6e", "#f20855", "#ff0f3c", "#ef7419", "#32ff15"],
+			xaxis: {
+				mode: "categories",
+				tickLength: 0,
+                font: {
+                    color: "#efeeef"
+                }
+			},
+            yaxes:
+                [{
+                    show: true,
+                    font: {
+                        color: "#efeeef"
+                    }
+                }],
+            grid: {
+                color: "#efeeef"
+            }
+		};
+         window.clearTimeout(tmdata);
+         for(var i=0; i<tmstat.length; i++)
+            window.clearTimeout(tmstat[i]);
+
+         if (astat != null){
+                astat.abort();
+            }
+         if (achart != null) {
+                achart.abort();
+            }
+         gestatdata('ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}', options);
          $('#button_end').click(function() {
              $('#date_end').datepicker('show');
          });
@@ -141,8 +181,8 @@
              $('#date_start').datepicker('show')
          });
          $('#button_update').click(function () {
-             var st = new Date($('#date_start').val());
-             var en = new Date($('#date_end').val());
+             var st = new Date($('#date_start').datepicker("getDate"));
+             var en = new Date($('#date_end').datepicker("getDate"));
              if(st > en)
              {
                  $('#date_start').addClass('stat-error-color');
@@ -152,7 +192,7 @@
              {
                  $('#date_start').removeClass('stat-error-color');
                  $('#date_end').removeClass('stat-error-color');
-                 gestatdata('/ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}');
+                 gestatdata('/ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}', options);
              }
          });
      });
