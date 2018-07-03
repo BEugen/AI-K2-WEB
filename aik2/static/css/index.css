@@ -414,6 +414,11 @@ ul#menu {
 {
     height: 10%;
 }
+
+.nav-cursor
+{
+    cursor: pointer;
+}
 .char-half
 {
     height: 50%;
