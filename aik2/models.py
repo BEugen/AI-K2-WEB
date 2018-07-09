@@ -120,7 +120,6 @@ class Getstat(object):
 class GetStatForChart(object):
     def get_json_stat_day(self):
         try:
-            print('=== Chart day ===')
             result = []
             dtc = datetime.now()
             dtc = datetime(dtc.year, dtc.month, dtc.day,
@@ -146,7 +145,6 @@ class GetStatForChart(object):
                 result.append([[t_class[str(y)],
                                 (sql_val.seconds + add_seconds) / 3600 if sql_val else add_seconds / 3600
                                 if add_seconds != 0 else None]])
-                print(result)
             return result
         except Exception as e:
             print(e)
