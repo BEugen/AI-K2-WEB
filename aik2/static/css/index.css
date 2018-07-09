@@ -709,3 +709,60 @@ ul#menu {
     margin-left: -55px;
     z-index: 300;
 }
+
+#preview {
+  position: absolute;
+  border: 1px solid #ccc;
+  background: #333;
+  padding: 5px;
+  display: none;
+  color: #fff;
+}
+.prot-toolbox-header-form
+{
+    height: 45px;
+    background-color: #595b5d;
+    font-weight: bold;
+    text-align: center;
+    color: #eaeaea;
+    margin-left: 5px;
+}
+.prot-cell-font-form {
+    color: #eaeaea;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.2em;
+    text-align: center;
+    padding-top: 0.4%;
+    width: 9%;
+}
+.prot-row-form
+{
+    height: 45px;
+    background-color: #3c3f41;
+    font-weight: bold;
+    text-align: center;
+    color: #eaeaea;
+    margin-left: 5px;
+    cursor: default;
+    border-top: #eaeaea solid 1px;
+}
+.prot-row-form:hover
+{
+    background-color: #adb0b5;
+    color: #2b2b2b;
+}
+.prot-row-font-form {
+   /* color: #eaeaea;*/
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.0em;
+    text-align: center;
+    padding-top: 0.4%;
+    width: 9%;
+}
+.prot-row-img-form
+{
+    height: auto;
+    width: auto;
+    max-width: 35px;
+    max-height: 35px;
+}

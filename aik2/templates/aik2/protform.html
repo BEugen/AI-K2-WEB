@@ -1,0 +1,32 @@
+<div id="nstat" class="float-left height_full">
+ <div class="width_full prot-toolbox-header-form">
+     <div class="float-left prot-cell-font-form">Дата/время</div>
+     <div class="float-left prot-cell-font-form">Дата/время кадра</div>
+     <div class="float-left prot-cell-font-form">Кадр</div>
+     <div class="float-left prot-cell-font-form">Останов</div>
+     <div class="float-left prot-cell-font-form">Пустой</div>
+     <div class="float-left prot-cell-font-form">Полный</div>
+     <div class="float-left prot-cell-font-form">Не распознано</div>
+     <div class="float-left prot-cell-font-form">Класс</div>
+     <div class="float-left prot-cell-font-form">SNN1</div>
+     <div class="float-left prot-cell-font-form">SNN2</div>
+     <div class="float-left prot-cell-font-form">SNN3</div>
+ </div>
+</div>
+<div id="wait" class="tool_wait"></div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        window.clearTimeout(tmdata);
+         for(var i=0; i<tmstat.length; i++)
+            window.clearTimeout(tmstat[i]);
+
+         if (astat != null){
+                astat.abort();
+            }
+         if (achart != null) {
+                achart.abort();
+            }
+         getprotocol('/ai_json_protocol', '{{ csrf_token }}');
+    });
+</script>

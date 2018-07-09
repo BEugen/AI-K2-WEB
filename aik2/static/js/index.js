@@ -339,3 +339,53 @@ function setstat(data, options)
           tdata[3], tdata[4], tdata[5]], options);
   }
 }
+
+function getprotocol(url, token) {
+   astat =  $.ajax(
+        {
+            url: url,
+            data: {
+                id: 0, 'csrfmiddlewaretoken': token
+            },
+            timeout: 100000,
+            type: 'POST',
+            beforeSend: function () {
+                 $("#wait").show();
+            },
+            success: function (data) {
+               $("#wait").hide();
+               protocolview(data);
+            },
+            error: function() {
+                $("#wait").hide();
+            }
+        });
+}
+
+function protocolview(data) {
+ for(var i=0; i < data.length; i++)
+ {
+     var r = "<div class='width-full prot-row-form'>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['tstamp'] + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['tfile'] + "</div>" +
+         "<div class='float-left prot-row-font-form'><a href='data:image/jpeg;base64," + data[i]['img'] + "'" +
+         "class='preview' title='Класс: " + snnclass(data[i]['snnclass']) +"'><img class='prot-row-img-form' " +
+         "src='data:image/jpeg;base64," + data[i]['img'] + "'></a></div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['stop'].toFixed(2) + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['empty'].toFixed(2) + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['full'].toFixed(2) + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['imerror'].toFixed(2) + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + snnclass(data[i]['snnclass']) + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['snn1'] + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['snn2'] + "</div>" +
+         "<div class='float-left prot-row-font-form'>" + data[i]['snn3'] + "</div></div>";
+     $("#nstat").append(r);
+ }
+ $('.preview').anarchytip();
+}
+
+function snnclass(id) {
+    var t_class = {'-1': 'простой', '0': 'без материала', '2': 'пыль', '1': 'не распознано',
+        '3': 'брикеты, мелочь', '4': 'брикеты'};
+    return t_class[id.toString()];
+}

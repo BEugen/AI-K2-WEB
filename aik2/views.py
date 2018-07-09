@@ -17,6 +17,8 @@ def index(request):
             template = 'aik2/chartform.html'
             if id == 1:
                 template = 'aik2/statform.html'
+            if id == 2:
+                template = 'aik2/protform.html'
             return render(request, template, {})
     return render(request, 'aik2/index.html', {})
 
@@ -86,6 +88,17 @@ def ai_json_fullstat(request):
                 st = request.POST['st']
                 en = request.POST['en']
                 return HttpResponse(json.dumps(DataForChart.get_json_fullstat(st, en)), content_type="application/json")
+        return HttpResponse(json.dumps([]), content_type="application/json")
+    except Exception as e:
+        error = {'error': e}
+        return HttpResponse(json.dumps(error), content_type="application/json")
+
+
+def ai_json_protocol(request):
+    try:
+        if request.method == 'POST':
+            if request.is_ajax():
+                return HttpResponse(json.dumps(DataForChart.get_json_protocol()), content_type="application/json")
         return HttpResponse(json.dumps([]), content_type="application/json")
     except Exception as e:
         error = {'error': e}

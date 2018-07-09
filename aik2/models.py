@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import pytz
 import math
-
+import json
 
 # Create your models here.
 
@@ -128,12 +128,10 @@ class GetStatForChart(object):
             last_stat = convstat.objects.filter(
                 start__lte=dtc, end__isnull=True).order_by('-start').annotate(
                 duration=dtc - F('start')).all()[:1].values()
-            print(last_stat)
             if len(last_stat) > 0:
                 last_stat = last_stat[0]
             else:
                 last_stat = None
-            print('Last satat = ', last_stat)
             dtc = datetime(dtc.year, dtc.month, dtc.day, 0, 0, 0, tzinfo=pytz.UTC)
             dte = datetime(dtc.year, dtc.month, dtc.day, 23, 59, 59, tzinfo=pytz.UTC)
             for y in range(-1, 5):
@@ -142,7 +140,6 @@ class GetStatForChart(object):
                     duration=F('end') - F('start')).aggregate(
                     total=Sum('duration')
                 )['total']
-                print(sql_val)
                 add_seconds = 0
                 if last_stat and y == last_stat['nclass']:
                     add_seconds = last_stat['duration'].seconds
@@ -163,7 +160,11 @@ class GetStatForChart(object):
                            dtc.hour, dtc.minute, dtc.second, tzinfo=pytz.UTC)
             last_stat = convstat.objects.filter(
                 start__lte=dtc, end__isnull=True).order_by('-start').annotate(
-                duration=dtc - F('start')).all()[:1].values()[0]
+                duration=dtc - F('start')).all()[:1].values()
+            if len(last_stat) > 0:
+                last_stat = last_stat[0]
+            else:
+                last_stat = None
             hour = int(dtc.hour / 8) * 8
             dtc = datetime(dtc.year, dtc.month, dtc.day, hour, 0, 0, tzinfo=pytz.UTC)
             dtc = dtc - timedelta(hours=number * 8)
@@ -242,3 +243,16 @@ class GetStatForChart(object):
         except Exception as e:
             print(e)
             return []
+
+    def get_json_protocol(self):
+        try:
+            sql_val = conveyer2status.objects. \
+                          order_by('-tstamp')[:20].all().values()
+            for row in sql_val:
+                row['id'] = str(row['id'])
+                row['tstamp'] = json.dumps(row['tstamp'].strftime('%d.%m.%Y %H:%M:%S')).replace('"', '')
+                row['tfile'] = json.dumps(row['tfile'].strftime('%d.%m.%Y %H:%M:%S')).replace('"', '')
+            return [dict(sql) for sql in sql_val]
+        except Exception as e:
+            print(e)
+            return[]
