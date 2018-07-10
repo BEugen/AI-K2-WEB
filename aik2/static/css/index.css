@@ -772,12 +772,16 @@ ul#menu {
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 1.6em;
     text-align: center;
-    margin-top: 8px;
+    margin-top: 6px;
     width: 10%;
     border: #adb0b5 solid 1px;
     margin-right: 24px;
+    cursor: default;
+    height: 22px;
+    padding-top: 7px;
 }
 .prot-naw-font-form:hover
 {
-    border: #3dabb5 solid 1px;
+    border: #a6dbed solid 1px;
+    color: #a6dbed;
 }

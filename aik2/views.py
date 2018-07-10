@@ -98,7 +98,9 @@ def ai_json_protocol(request):
     try:
         if request.method == 'POST':
             if request.is_ajax():
-                return HttpResponse(json.dumps(DataForChart.get_json_protocol()), content_type="application/json")
+                dt = request.POST['dt']
+                dr = request.POST['dr']
+                return HttpResponse(json.dumps(DataForChart.get_json_protocol(dr, dt)), content_type="application/json")
         return HttpResponse(json.dumps([]), content_type="application/json")
     except Exception as e:
         error = {'error': e}

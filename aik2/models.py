@@ -242,9 +242,17 @@ class GetStatForChart(object):
             print(e)
             return []
 
-    def get_json_protocol(self):
+    def get_json_protocol(self, direct, dtime):
         try:
-            sql_val = conveyer2status.objects. \
+            if dtime:
+                dt = datetime.strptime(dtime, '%d.%m.%Y %H:%M:%S')
+                dt = datetime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, tzinfo=pytz.UTC)
+                if direct and direct == '1':
+                    sql_val = conveyer2status.objects.filter(tstamp__gt=dt).order_by('-tstamp')[:20].all().values()
+                else:
+                    sql_val = conveyer2status.objects.filter(tstamp__lt=dt).order_by('-tstamp')[:20].all().values()
+            else:
+                sql_val = conveyer2status.objects. \
                           order_by('-tstamp')[:20].all().values()
             for row in sql_val:
                 row['id'] = str(row['id'])
