@@ -363,26 +363,26 @@ function getprotocol(url, token, dt , direct) {
 }
 
 function protocolview(data) {
- for(var i=0; i < data.length; i++)
- {
-     var r = "<div class='width-full prot-row-form'>" +
-         "<div id='t'" + i + " class='float-left prot-row-font-form'>" + data[i]['tstamp'] + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['tfile'] + "</div>" +
-         "<div class='float-left prot-row-font-form'><a href='data:image/jpeg;base64," + data[i]['img'] + "'" +
-         "class='preview' title='Класс: " + snnclass(data[i]['snnclass']) +"'><img class='prot-row-img-form' " +
-         "src='data:image/jpeg;base64," + data[i]['img'] + "'></a></div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['stop'].toFixed(2) + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['empty'].toFixed(2) + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['full'].toFixed(2) + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['imerror'].toFixed(2) + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + snnclass(data[i]['snnclass']) + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['snn1'] + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['snn2'] + "</div>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['snn3'] + "</div></div>";
-     //$("#nstat").append(r);
-     $(r).insertAfter("#hd");
- }
- $('.preview').anarchytip();
+    $('div[id^="rw"]').remove();
+    for (var i = 0; i < data.length; i++) {
+        var r = "<div id='rw" + i + "' class='prot-row-form'>" +
+            "<div id='t" + i + "' class='float-left prot-row-font-form'>" + data[i]['tstamp'] + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['tfile'] + "</div>" +
+            "<div class='float-left prot-row-font-form'><a href='data:image/jpeg;base64," + data[i]['img'] + "'" +
+            "class='preview' title='Класс: " + snnclass(data[i]['snnclass']) + "'><img class='prot-row-img-form' " +
+            "src='data:image/jpeg;base64," + data[i]['img'] + "'></a></div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['stop'].toFixed(2) + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['empty'].toFixed(2) + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['full'].toFixed(2) + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['imerror'].toFixed(2) + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + snnclass(data[i]['snnclass']) + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['snn1'] + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['snn2'] + "</div>" +
+            "<div class='float-left prot-row-font-form'>" + data[i]['snn3'] + "</div></div>";
+        //$("#nstat").append(r);
+        $(r).insertAfter("#hd");
+    }
+    $('.preview').anarchytip();
 }
 
 function snnclass(id) {

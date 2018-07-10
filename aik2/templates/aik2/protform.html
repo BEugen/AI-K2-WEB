@@ -1,5 +1,5 @@
 <div id="nstat" class="float-left height_full">
- <div id="hd" class="width_full prot-toolbox-header-form">
+ <div id="hd" class="prot-toolbox-header-form">
      <div class="float-left prot-cell-font-form">Дата/время</div>
      <div class="float-left prot-cell-font-form">Дата/время кадра</div>
      <div class="float-left prot-cell-font-form">Кадр</div>
@@ -12,7 +12,7 @@
      <div class="float-left prot-cell-font-form">SNN2</div>
      <div class="float-left prot-cell-font-form">SNN3</div>
  </div>
-    <div class="width_full prot-toolbox-header-form">
+    <div class="prot-toolbox-header-form">
        <div id='last' class="float-right prot-naw-font-form">
             >>
        </div>
@@ -37,6 +37,12 @@
                 achart.abort();
             }
          getprotocol('/ai_json_protocol', '{{ csrf_token }}', '', 0);
-         $("#l")
+         $("#last").click(function(){
+             getprotocol('/ai_json_protocol', '{{ csrf_token }}', $("#t0").text(), 1);
+         });
+         $("#prev").click(function(){
+             var l = $( ".prot-row-form" ).length - 1;
+             getprotocol('/ai_json_protocol', '{{ csrf_token }}', $("#t" + l).text(), 0);
+         });
     });
 </script>
