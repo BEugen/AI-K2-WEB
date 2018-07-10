@@ -766,3 +766,18 @@ ul#menu {
     max-width: 35px;
     max-height: 35px;
 }
+
+.prot-naw-font-form {
+   /* color: #eaeaea;*/
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.6em;
+    text-align: center;
+    margin-top: 8px;
+    width: 10%;
+    border: #adb0b5 solid 1px;
+    margin-right: 24px;
+}
+.prot-naw-font-form:hover
+{
+    border: #3dabb5 solid 1px;
+}

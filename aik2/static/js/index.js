@@ -340,12 +340,12 @@ function setstat(data, options)
   }
 }
 
-function getprotocol(url, token) {
+function getprotocol(url, token, dt , direct) {
    astat =  $.ajax(
         {
             url: url,
             data: {
-                id: 0, 'csrfmiddlewaretoken': token
+                dt: dt, dr: direct, 'csrfmiddlewaretoken': token
             },
             timeout: 100000,
             type: 'POST',
@@ -366,7 +366,7 @@ function protocolview(data) {
  for(var i=0; i < data.length; i++)
  {
      var r = "<div class='width-full prot-row-form'>" +
-         "<div class='float-left prot-row-font-form'>" + data[i]['tstamp'] + "</div>" +
+         "<div id='t'" + i + " class='float-left prot-row-font-form'>" + data[i]['tstamp'] + "</div>" +
          "<div class='float-left prot-row-font-form'>" + data[i]['tfile'] + "</div>" +
          "<div class='float-left prot-row-font-form'><a href='data:image/jpeg;base64," + data[i]['img'] + "'" +
          "class='preview' title='Класс: " + snnclass(data[i]['snnclass']) +"'><img class='prot-row-img-form' " +
@@ -379,7 +379,8 @@ function protocolview(data) {
          "<div class='float-left prot-row-font-form'>" + data[i]['snn1'] + "</div>" +
          "<div class='float-left prot-row-font-form'>" + data[i]['snn2'] + "</div>" +
          "<div class='float-left prot-row-font-form'>" + data[i]['snn3'] + "</div></div>";
-     $("#nstat").append(r);
+     //$("#nstat").append(r);
+     $(r).insertAfter("#hd");
  }
  $('.preview').anarchytip();
 }
