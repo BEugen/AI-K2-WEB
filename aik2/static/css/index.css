@@ -778,7 +778,8 @@ ul#menu {
     margin-right: 24px;
     cursor: default;
     height: 22px;
-    padding-top: 7px;
+    padding-top: 4px;
+    padding-bottom: 6px;
 }
 .prot-naw-font-form:hover
 {
