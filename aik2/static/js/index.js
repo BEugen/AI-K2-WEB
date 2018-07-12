@@ -362,6 +362,28 @@ function getprotocol(url, token, dt , direct) {
         });
 }
 
+function gettrends(url, token, id) {
+   astat =  $.ajax(
+        {
+            url: url,
+            data: {
+                id: id, 'csrfmiddlewaretoken': token
+            },
+            timeout: 100000,
+            type: 'POST',
+            beforeSend: function () {
+                 $("#wait_" +  (id === 0? 'month' : 'year')).show();
+            },
+            success: function (data) {
+               $("#wait_" +  (id === 0? 'month' : 'year')).hide();
+               drawtrend(id, data);
+            },
+            error: function() {
+                $("#wait_" +  (id === 0? 'month' : 'year')).hide();
+            }
+        });
+}
+
 function protocolview(data) {
     $('div[id^="rw"]').remove();
     for (var i = 0; i < data.length; i++) {
@@ -389,4 +411,79 @@ function snnclass(id) {
     var t_class = {'-1': 'простой', '0': 'без материала', '2': 'пыль', '1': 'не распознано',
         '3': 'брикеты, мелочь', '4': 'брикеты'};
     return t_class[id.toString()];
+}
+
+
+function drawtrend(id, data) {
+     var options = {
+            colors: ["#759ebf", "#666d6e", "#f20855", "#ff0f3c", "#ef7419", "#32ff15"]
+            ,
+            xaxis:
+            {
+                mode: "time",
+                timezone: "browser",
+                useLocalTime: true,
+                timeformat: "%d.%m.%y",
+                font: {
+                    color: "#efeeef"
+                }
+
+            },
+            yaxes: [
+                {
+                    position: "left",
+                    min: 0,
+                    max: 24,
+                    color: "#759ebf",
+                    font: {
+                        color: "#efeeef"
+                    }
+                },
+                {
+                    position: "left",
+                    min: 0,
+                    max: 24,
+                    color: "#666d6e"
+                },
+                {
+                    position: "left",
+                    min: 0,
+                    max: 24,
+                    color: "#f20855"
+                },
+                {
+                    position: "left",
+                    min: 0,
+                    max: 24,
+                    color: "#ff0f3c"
+                },
+                {
+                    position: "left",
+                    min: 0,
+                    max: 24,
+                    color: "#ef7419"
+                },
+                {
+                    position: "left",
+                    min: 0,
+                    max: 24,
+                    color: "#32ff15"
+                }
+                ],
+            legend: {
+                position: "ne",
+                backgroundOpacity: 0.0,
+                labelBoxBorderColor: null,
+                margin: 0,
+                noColumns: 0,
+                show: true,
+                sorted: null},
+            grid: {
+                color: "#eaeaea",
+                hoverable: true
+            }
+        };
+        var ncart = id === 0? 'month' : 'year';
+        $.plot("#ch_" + ncart, data, options);
+        //$(".legend>table").css({ top: 0 });
 }

@@ -5,6 +5,7 @@ from django.utils import timezone
 import pytz
 import math
 import json
+import calendar
 
 # Create your models here.
 
@@ -234,8 +235,8 @@ class GetStatForChart(object):
                 for k in range(-1, 5):
                     t.append([[t_class[str(k)], result[i][str(k)]]])
                 chart_result.append(t)
-            max_ses = math.floor(max_ses*0.10 + max_ses)
-            max_all = math.floor(max_all*0.10 + max_all)
+            max_ses = math.floor(max_ses * 0.10 + max_ses)
+            max_all = math.floor(max_all * 0.10 + max_all)
             chart_result.append([[max_ses, max_all]])
             return chart_result
         except Exception as e:
@@ -253,7 +254,7 @@ class GetStatForChart(object):
                     sql_val = conveyer2status.objects.filter(tstamp__lt=dt).order_by('-tstamp')[:20].all().values()
             else:
                 sql_val = conveyer2status.objects. \
-                          order_by('-tstamp')[:20].all().values()
+                              order_by('-tstamp')[:20].all().values()
             for row in sql_val:
                 row['id'] = str(row['id'])
                 row['tstamp'] = json.dumps(row['tstamp'].strftime('%d.%m.%Y %H:%M:%S')).replace('"', '')
@@ -261,4 +262,38 @@ class GetStatForChart(object):
             return [dict(sql) for sql in sql_val]
         except Exception as e:
             print(e)
-            return[]
+            return []
+
+    def get_json_thrend(self, id):
+        try:
+            result = []
+            dtc = datetime.now()
+            dte = datetime(dtc.year, dtc.month, dtc.day, dtc.hour, dtc.minute, dtc.second, tzinfo=pytz.UTC)
+            dte = dte - timedelta(days=1)
+            if id == '1':
+                dtc = datetime(dtc.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            else:
+                dtc = datetime(dtc.year, dtc.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            while dtc < dte:
+                for y in range(0, 6):
+                    sql_val = convstat.objects.filter(
+                        start__gte=dtc, start__lt=(dtc + timedelta(days=1)), nclass__exact=(y - 1),
+                        end__isnull=False).annotate(
+                        duration=F('end') - F('start')).aggregate(
+                        total=Sum('duration')
+                    )['total']
+                    if len(result) > y:
+                        result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val.seconds / 3600
+                        if sql_val else 0])
+                    else:
+                        result.append({'label': t_class[str(y - 1)], 'data':
+                            [[self.__convert_time_to_jscript(dtc), sql_val.seconds / 3600
+                            if sql_val else 0]]})
+                dtc = dtc + timedelta(days=1)
+            return result
+        except Exception as e:
+            print(e)
+            return []
+
+    def __convert_time_to_jscript(self, dt):
+        return calendar.timegm(dt.timetuple()) * 1000

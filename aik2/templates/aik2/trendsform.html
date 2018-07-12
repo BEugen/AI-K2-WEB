@@ -2,12 +2,33 @@
     <div class="width_full title-chart">
                 <div class="width_full tend-chart-half-form chart-backround char-day">
                     <div class="width_full stat-chart-label-form stat-label-font-form">С начала месяца</div>
-                    <div id="ch_month" class="width_full chart-height"></div>
+                    <div id="ch_month" class="width_full trend-chart-height"></div>
+                    <div id="wait_month" class="tool_wait"></div>
                 </div>
                <div class="width_full tend-chart-half-form chart-backround char-day">
                     <div class="width_full stat-chart-label-form stat-label-font-form">С начала года</div>
-                    <div id="ch_year" class="width_full chart-height"></div>
+                    <div id="ch_year" class="width_full trend-chart-height"></div>
+                   <div id="wait_year" class="tool_wait"></div>
                 </div>
 
             </div>
 </div>
+<div id="wait" class="tool_wait"></div>
+<script type="text/javascript">
+     $(document).ready(function () {
+         window.clearTimeout(tmdata);
+         for(var i=0; i<tmstat.length; i++)
+            window.clearTimeout(tmstat[i]);
+
+         if (astat != null){
+                astat.abort();
+            }
+         if (achart != null) {
+                achart.abort();
+            }
+         gettrends('/ai_json_trend', '{{ csrf_token }}', 0);
+         gettrends('/ai_json_trend', '{{ csrf_token }}', 1);
+     });
+
+
+</script>
