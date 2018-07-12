@@ -19,6 +19,8 @@ def index(request):
                 template = 'aik2/statform.html'
             if id == 2:
                 template = 'aik2/protform.html'
+            if id == 3:
+                template = 'aik2/trendsform.html'
             return render(request, template, {})
     return render(request, 'aik2/index.html', {})
 
