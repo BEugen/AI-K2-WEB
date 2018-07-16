@@ -3,6 +3,7 @@ var tmstat = [];
 var achart = null;
 var astat = null;
 
+var limstop = 0.947;
 function getdata(url, root, token) {
    astat =  $.ajax(
         {
@@ -122,7 +123,7 @@ function drawdata(data, root)
         $("#line-1", root).css('stroke', '#eaeaea');
         $("#circle-0", root).css('stroke', '#eaeaea');
         $("#bcircle-0", root).css('display', 'inline');
-        if (data['stop'] <= 0.95) {
+        if (data['stop'] <= limstop) {
             $("[id^='cce']", root).each(
                 function () {
                     $(this).css('fill', '#32f90a');
@@ -235,7 +236,7 @@ function drawinfo(data, root)
 {
     $("#cam").css('background-image', 'url(data:image/jpeg;base64,' + data['img'] + ')');
     $("#cam-label").text("Дата " + data['tstamp']);
-    if (data['stop'] > 0.95 && data['snnclass'] !== 1) {
+    if (data['stop'] > limstop && data['snnclass'] !== 1) {
         $("#img").css('box-shadow', '0 0 40px #759ebf');
     }
     else
@@ -263,11 +264,6 @@ function drawinfo(data, root)
                     $("#img").css('box-shadow', '0 0 25px 2px #32ff15');
                     break;
             }
-            //   }
-            //   else
-            //   {
-            //        $("#img").css('box-shadow', '0 0 25px 2px #666d6e');
-            //    }
         }
     }
     drawdata(data, root)
