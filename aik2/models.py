@@ -62,6 +62,13 @@ class convstat(models.Model):
     end = models.DateTimeField()
 
 
+class conv2seconds(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nclass = models.IntegerField()
+    ndate = models.DateTimeField()
+    seconds = models.FloatField()
+
+
 class Getdata(object):
     def get_json_data(self):
         try:
@@ -144,7 +151,7 @@ class GetStatForChart(object):
                 if last_stat and y == last_stat['nclass']:
                     add_seconds = last_stat['duration'].seconds
                 result.append([[t_class[str(y)],
-                                (sql_val.seconds + add_seconds) / 3600 if sql_val else add_seconds / 3600
+                                (sql_val.seconds + add_seconds) / 864 if sql_val else add_seconds / 864
                                 if add_seconds != 0 else None]])
             return result
         except Exception as e:
@@ -178,7 +185,7 @@ class GetStatForChart(object):
                 if last_stat and y == last_stat['nclass'] and number == 0:
                     add_seconds = last_stat['duration'].seconds
                 result.append([[t_class[str(y)],
-                                (sql_val.seconds + add_seconds) / 3600 if sql_val else add_seconds / 3600
+                                (sql_val.seconds + add_seconds) / 288 if sql_val else add_seconds / 288
                                 if add_seconds != 0 else None]])
 
             ses = ''
@@ -201,6 +208,7 @@ class GetStatForChart(object):
             dte = datetime.strptime(en, "%d.%m.%Y")
             dts = datetime(dts.year, dts.month, dts.day, 0, 0, 0, tzinfo=pytz.UTC)
             dte = datetime(dte.year, dte.month, dte.day, 23, 59, 59, tzinfo=pytz.UTC)
+            dlt_time = (dte-dts).total_seconds()/3
             sesion = 0
             max_all = 1.0
             max_ses = 1.0
@@ -213,7 +221,7 @@ class GetStatForChart(object):
                         total=Sum('duration')
                     )['total']
                     k = str(y)
-                    val = sql_val.seconds / 3600 if sql_val else 0
+                    val = sql_val.seconds if sql_val else 0
                     if sesion not in result or k not in result[sesion]:
                         result[sesion][k] = val
                         max_ses = max_ses if max_ses > val else val
@@ -233,6 +241,10 @@ class GetStatForChart(object):
             for i in range(0, 4):
                 t = []
                 for k in range(-1, 5):
+                    if i < 3:
+                        result[i][str(k)] = result[i][str(k)] * 100 / dlt_time if dlt_time != 0.0 else 0.0
+                    else:
+                        result[i][str(k)] = result[i][str(k)] * 100 / (dlt_time * 3) if dlt_time != 0.0 else 0.0
                     t.append([[t_class[str(k)], result[i][str(k)]]])
                 chart_result.append(t)
             max_ses = math.floor(max_ses * 0.10 + max_ses)
@@ -283,11 +295,11 @@ class GetStatForChart(object):
                         total=Sum('duration')
                     )['total']
                     if len(result) > y:
-                        result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val.seconds / 3600
+                        result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val.seconds / 864
                         if sql_val else 0])
                     else:
                         result.append({'label': t_class[str(y - 1)], 'data':
-                            [[self.__convert_time_to_jscript(dtc), sql_val.seconds / 3600
+                            [[self.__convert_time_to_jscript(dtc), sql_val.seconds / 864
                             if sql_val else 0]]})
                 dtc = dtc + timedelta(days=1)
             return result

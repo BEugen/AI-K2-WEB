@@ -222,11 +222,11 @@ function getdatachart(id, url, chart, options, subscribe, token)
 
 function drawchart(id, chart, options, data) {
     options['yaxes'][0]['min'] = 0.0;
-    options['yaxes'][0]['max'] = 24.5;
+    options['yaxes'][0]['max'] = 105.0;
     if(id < 3)
     {
         options['yaxes'][0]['min'] = 0.0;
-        options['yaxes'][0]['max'] = 8.5;
+        options['yaxes'][0]['max'] = 105.0;
     }
     $.plot("#" + chart, [ data[0], data[1], data[2],
         data[3], data[4], data[5]], options);
@@ -326,11 +326,11 @@ function setstat(data, options)
       var tdata = data[i];
       drawstattable(i, chart, tdata);
       options['yaxes'][0]['min'] = 0.0;
-      options['yaxes'][0]['max'] = data[4][0][1];
-      if (i < 3) {
-          options['yaxes'][0]['min'] = 0.0;
-          options['yaxes'][0]['max'] = data[4][0][0];
-      }
+      options['yaxes'][0]['max'] = 105.0;
+      //if (i < 3) {
+      //    options['yaxes'][0]['min'] = 0.0;
+      //    options['yaxes'][0]['max'] = data[4][0][0];
+      //}
       $.plot("#" + chart, [tdata[0], tdata[1], tdata[2],
           tdata[3], tdata[4], tdata[5]], options);
   }
@@ -429,7 +429,7 @@ function drawtrend(id, data) {
                 {
                     position: "left",
                     min: 0,
-                    max: 24,
+                    max: 105.0,
                     color: "#759ebf",
                     font: {
                         color: "#efeeef"
@@ -438,31 +438,31 @@ function drawtrend(id, data) {
                 {
                     position: "left",
                     min: 0,
-                    max: 24,
+                    max: 105.0,
                     color: "#666d6e"
                 },
                 {
                     position: "left",
                     min: 0,
-                    max: 24,
+                    max: 105.0,
                     color: "#f20855"
                 },
                 {
                     position: "left",
                     min: 0,
-                    max: 24,
+                    max: 105.0,
                     color: "#ff0f3c"
                 },
                 {
                     position: "left",
                     min: 0,
-                    max: 24,
+                    max: 105.0,
                     color: "#ef7419"
                 },
                 {
                     position: "left",
                     min: 0,
-                    max: 24,
+                    max: 105.0,
                     color: "#32ff15"
                 }
                 ],
