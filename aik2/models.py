@@ -6,6 +6,7 @@ import pytz
 import math
 import json
 import calendar
+import numpy as np
 
 # Create your models here.
 
@@ -63,7 +64,7 @@ class convstat(models.Model):
 
 
 class conv2seconds(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True)
     nclass = models.IntegerField()
     ndate = models.DateTimeField()
     seconds = models.FloatField()
@@ -104,7 +105,7 @@ class GetDataRecognize(object):
 
 
 class Getstat(object):
-    def get_json_stat(self, sdt):
+    def get_json_stat(self):
         try:
             result = {'0': {}, '1': {}, '2': {}}
             dtc = datetime.now()
@@ -141,6 +142,7 @@ class GetStatForChart(object):
                 last_stat = None
             dtc = datetime(dtc.year, dtc.month, dtc.day, 0, 0, 0, tzinfo=pytz.UTC)
             dte = datetime(dtc.year, dtc.month, dtc.day, 23, 59, 59, tzinfo=pytz.UTC)
+            allt = 0
             for y in range(-1, 5):
                 sql_val = convstat.objects.filter(
                     start__gte=dtc, end__lte=dte, nclass__exact=y, end__isnull=False).annotate(
@@ -150,9 +152,12 @@ class GetStatForChart(object):
                 add_seconds = 0
                 if last_stat and y == last_stat['nclass']:
                     add_seconds = last_stat['duration'].seconds
+                allt += (sql_val.seconds + add_seconds) if sql_val else add_seconds
                 result.append([[t_class[str(y)],
-                                (sql_val.seconds + add_seconds) / 864 if sql_val else add_seconds / 864
+                                (sql_val.seconds + add_seconds) if sql_val else add_seconds
                                 if add_seconds != 0 else None]])
+            for x in result:
+                x[0][1] = x[0][1] * 100.0 / allt if allt > 0 else 0
             return result
         except Exception as e:
             print(e)
@@ -175,6 +180,7 @@ class GetStatForChart(object):
             dtc = datetime(dtc.year, dtc.month, dtc.day, hour, 0, 0, tzinfo=pytz.UTC)
             dtc = dtc - timedelta(hours=number * 8)
             dte = dtc + timedelta(hours=8)
+            allt = 0
             for y in range(-1, 5):
                 sql_val = convstat.objects.filter(
                     start__gte=dtc, end__lt=dte, nclass__exact=y, end__isnull=False).annotate(
@@ -184,8 +190,9 @@ class GetStatForChart(object):
                 add_seconds = 0
                 if last_stat and y == last_stat['nclass'] and number == 0:
                     add_seconds = last_stat['duration'].seconds
+                allt += (sql_val.seconds + add_seconds) if sql_val else add_seconds
                 result.append([[t_class[str(y)],
-                                (sql_val.seconds + add_seconds) / 288 if sql_val else add_seconds / 288
+                                (sql_val.seconds + add_seconds) if sql_val else add_seconds
                                 if add_seconds != 0 else None]])
 
             ses = ''
@@ -195,6 +202,8 @@ class GetStatForChart(object):
                 ses = '№2'
             if dtc.hour == 16:
                 ses = '№3'
+            for x in result:
+                x[0][1] = x[0][1] * 100.0 / allt if allt > 0 else 0
             return result, dtc.strftime("%d.%m.%y") + ' ' + ses
         except Exception as e:
             print(e)
@@ -203,16 +212,18 @@ class GetStatForChart(object):
     def get_json_fullstat(self, st, en):
         try:
             result = {0: {}, 1: {}, 2: {}, 3: {}}
+            time_all = []
             chart_result = []
             dts = datetime.strptime(st, "%d.%m.%Y")
             dte = datetime.strptime(en, "%d.%m.%Y")
             dts = datetime(dts.year, dts.month, dts.day, 0, 0, 0, tzinfo=pytz.UTC)
             dte = datetime(dte.year, dte.month, dte.day, 23, 59, 59, tzinfo=pytz.UTC)
-            dlt_time = (dte-dts).total_seconds()/3
+            dlt_time = (dte - dts).total_seconds() / 3
             sesion = 0
             max_all = 1.0
             max_ses = 1.0
             while dts < dte:
+                all = 0
                 for y in range(-1, 5):
                     sql_val = convstat.objects.filter(
                         start__gte=dts, end__lt=(dts + timedelta(hours=8)),
@@ -222,6 +233,7 @@ class GetStatForChart(object):
                     )['total']
                     k = str(y)
                     val = sql_val.seconds if sql_val else 0
+                    all += val
                     if sesion not in result or k not in result[sesion]:
                         result[sesion][k] = val
                         max_ses = max_ses if max_ses > val else val
@@ -235,6 +247,7 @@ class GetStatForChart(object):
                         result[3][k] += val
                         max_all = max_all if max_all > (result[3][k] + val) else (result[3][k] + val)
                 sesion += 1
+                time_all.append(all)
                 dts = dts + timedelta(hours=8)
                 if sesion > 2:
                     sesion = 0
@@ -242,9 +255,10 @@ class GetStatForChart(object):
                 t = []
                 for k in range(-1, 5):
                     if i < 3:
-                        result[i][str(k)] = result[i][str(k)] * 100 / dlt_time if dlt_time != 0.0 else 0.0
+                        result[i][str(k)] = result[i][str(k)] * 100 / time_all[i] if time_all[i] != 0.0 else 0.0
                     else:
-                        result[i][str(k)] = result[i][str(k)] * 100 / (dlt_time * 3) if dlt_time != 0.0 else 0.0
+                        result[i][str(k)] = result[i][str(k)] * 100 / np.sum(time_all) \
+                            if np.sum(time_all) != 0.0 else 0.0
                     t.append([[t_class[str(k)], result[i][str(k)]]])
                 chart_result.append(t)
             max_ses = math.floor(max_ses * 0.10 + max_ses)
@@ -288,18 +302,22 @@ class GetStatForChart(object):
                 dtc = datetime(dtc.year, dtc.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
             while dtc < dte:
                 for y in range(0, 6):
-                    sql_val = convstat.objects.filter(
-                        start__gte=dtc, start__lt=(dtc + timedelta(days=1)), nclass__exact=(y - 1),
-                        end__isnull=False).annotate(
-                        duration=F('end') - F('start')).aggregate(
-                        total=Sum('duration')
-                    )['total']
+                    sql_val = conv2seconds.objects.filter(
+                        ndate__gte=dtc, ndate__lt=(dtc + timedelta(days=1)), nclass__exact=(y - 1)).all().values()
+                    allt = conv2seconds.objects.filter(
+                        ndate__gte=dtc, ndate__lt=(dtc + timedelta(days=1))).aggregate(total=Sum('seconds'))['total']
+                    if sql_val and len(sql_val) > 0:
+                        sql_val = sql_val[0]['seconds']
+                    else:
+                        sql_val = None
+                    if allt is None:
+                        allt = 86400
                     if len(result) > y:
-                        result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val.seconds / 864
-                        if sql_val else 0])
+                        result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
+                                                if sql_val else 0])
                     else:
                         result.append({'label': t_class[str(y - 1)], 'data':
-                            [[self.__convert_time_to_jscript(dtc), sql_val.seconds / 864
+                            [[self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
                             if sql_val else 0]]})
                 dtc = dtc + timedelta(days=1)
             return result
