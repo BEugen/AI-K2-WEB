@@ -157,7 +157,8 @@ class GetStatForChart(object):
                                 (sql_val.seconds + add_seconds) if sql_val else add_seconds
                                 if add_seconds != 0 else None]])
             for x in result:
-                x[0][1] = x[0][1] * 100.0 / allt if allt > 0 else 0
+                if x[0][1] is not None:
+                    x[0][1] = x[0][1] * 100.0 / allt if allt > 0 else 0
             return result
         except Exception as e:
             print(e)
@@ -203,7 +204,8 @@ class GetStatForChart(object):
             if dtc.hour == 16:
                 ses = '№3'
             for x in result:
-                x[0][1] = x[0][1] * 100.0 / allt if allt > 0 else 0
+                if x[0][1] is not None:
+                    x[0][1] = x[0][1] * 100.0 / allt if allt > 0 else 0
             return result, dtc.strftime("%d.%m.%y") + ' ' + ses
         except Exception as e:
             print(e)
