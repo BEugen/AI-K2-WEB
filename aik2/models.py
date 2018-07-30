@@ -257,7 +257,8 @@ class GetStatForChart(object):
                 t = []
                 for k in range(-1, 5):
                     if i < 3:
-                        result[i][str(k)] = result[i][str(k)] * 100 / time_all[i] if time_all[i] != 0.0 else 0.0
+                        s = sum([time_all[x] for x in range(0, len(time_all)) if x % 3 == i])
+                        result[i][str(k)] = result[i][str(k)] * 100 / s if s != 0.0 else 0.0
                     else:
                         result[i][str(k)] = result[i][str(k)] * 100 / np.sum(time_all) \
                             if np.sum(time_all) != 0.0 else 0.0
