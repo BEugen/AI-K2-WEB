@@ -302,7 +302,7 @@ class GetStatForChart(object):
             if id == '1':
                 dtc = datetime(dtc.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
             else:
-                dtc = datetime(dtc.year, dtc.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+                dtc = datetime(dtc.year, dte.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
             while dtc < dte:
                 for y in range(0, 6):
                     sql_val = conv2seconds.objects.filter(
