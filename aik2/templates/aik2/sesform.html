@@ -5,17 +5,84 @@
         </div>
         <div class="float-right stat-toolbox-update-button-form" id="button_update">
         </div>
-        <div class="float-right stat-toolbox-calendar-button-form" id="button_start">
+        <div class="float-right stat-toolbox-calendar-button-form" id="button_end">
         </div>
         <div class="float-right">
-            <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_start"
+            <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_end"
                    readonly="True" type="text" value="??.??.????">
         </div>
         <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
             Дата:
         </div>
     </div>
-            <div class="width_full title-chart">
+    <div class="width_full title-predict">
+                <div class="width_full stat-label">Статистика (%)</div>
+                <div class="stat-header">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font">Параметр</div>
+                    <div class="float-left stat-cell-all stat-cell-font">Обозн.</div>
+                    <div id="s_0" class="float-left stat-cell-all stat-cell-font">Смена 1</div>
+                    <div id="s_1" class="float-left stat-cell-all stat-cell-font">Смена 2</div>
+                    <div id="s_2" class="float-left stat-cell-all stat-cell-font">Смена 3</div>
+                    <div id="s_3" class="float-left stat-cell-all stat-cell-font">Смена 4</div>
+                    <div id="s_4" class="float-left stat-cell-all stat-cell-font">Смена 5</div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font-l">Простой</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-0"></div>
+                    <div id="ch_0_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_4_0" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font-l">Без материала</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-1"></div>
+                    <div id="ch_0_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_4_1" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font-l">Не распознано</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-2"></div>
+                    <div id="ch_0_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_4_2" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font-l">Пыль</div>
+                    <div  class="float-left stat-cell-all stat-color-label stat-color-3"></div>
+                    <div id="ch_0_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_4_3" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font-l">Брикеты, мелочь</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-4"></div>
+                    <div id="ch_0_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_4_4" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+                <div class="stat-row">
+                    <div class="float-left stat-ses-cell-1 stat-cell-font-l">Брикеты</div>
+                    <div class="float-left stat-cell-all stat-color-label stat-color-5"></div>
+                    <div id="ch_0_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_1_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_2_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_3_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_4_5" class="float-left stat-cell-all stat-cell-font"></div>
+                </div>
+
+            </div>
+            <div class="width_full title-chart-ses-form">
                 <div class="width_full stat-chart-half-form chart-stage-container">
                     <div class="float-left height_full stat-chart-stage-form chart-backround">
                         <div id="c_0" class="width_full stat-chart-label-form stat-label-font-form">Смена №1</div>
@@ -45,21 +112,10 @@
 <div id="wait" class="tool_wait"></div>
 <script type="text/javascript">
      $(document).ready(function() {
-         $('#date_start').unbind();
          $('#date_end').unbind();
          $('#button_end').unbind();
-         $('#button_start').unbind();
-         $('#date_start').val(getDays());
          $('#date_end').val(getDays());
          $('#date_end').datepicker( "setDate", $('#date_end').val());
-         $('#date_start').datepicker( "setDate", $('#date_start').val());
-         $('#date_start').datepicker({
-             firstDay: 1,
-             dateFormat: 'd.mm.yy',
-            onSelect: function (dateText) {
-                $(this).val(dateText);
-            }
-         });
          $('#date_end').datepicker({
              firstDay: 1,
              dateFormat: 'd.mm.yy',
@@ -104,27 +160,13 @@
          if (achart != null) {
                 achart.abort();
             }
-         gestatdata('ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}', options);
+         getstatsesgrdata('ai_json_grses', $('#date_end').val(), '{{ csrf_token }}', options);
          $('#button_end').click(function() {
              $('#date_end').datepicker('show');
          });
-         $('#button_start').click(function() {
-             $('#date_start').datepicker('show')
-         });
          $('#button_update').click(function () {
-             var st = new Date($('#date_start').datepicker("getDate"));
-             var en = new Date($('#date_end').datepicker("getDate"));
-             if(st > en)
-             {
-                 $('#date_start').addClass('stat-error-color');
-                 $('#date_end').addClass('stat-error-color');
-             }
-             else
-             {
-                 $('#date_start').removeClass('stat-error-color');
-                 $('#date_end').removeClass('stat-error-color');
-                 gestatdata('/ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}', options);
-             }
+             getstatsesgrdata('/ai_json_grses', $('#date_end').val(), '{{ csrf_token }}', options);
+
          });
      });
 </script>

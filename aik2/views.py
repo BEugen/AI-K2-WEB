@@ -21,6 +21,8 @@ def index(request):
                 template = 'aik2/protform.html'
             if id == 3:
                 template = 'aik2/trendsform.html'
+            if id == 4:
+                template = 'aik2/sesform.html'
             return render(request, template, {})
     return render(request, 'aik2/index.html', {})
 
@@ -120,3 +122,14 @@ def ai_json_trend(request):
         error = {'error': e}
         return HttpResponse(json.dumps(error), content_type="application/json")
 
+
+def ai_json_grses(request):
+    try:
+        if request.method == 'POST':
+            if request.is_ajax():
+                dt = request.POST['dt']
+                return HttpResponse(json.dumps(DataForChart.get_json_stat_grses(dt)), content_type="application/json")
+        return HttpResponse(json.dumps([]), content_type="application/json")
+    except Exception as e:
+        error = {'error': e}
+        return HttpResponse(json.dumps(error), content_type="application/json")

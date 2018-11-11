@@ -340,3 +340,50 @@ class GetStatForChart(object):
 
     def __convert_time_to_jscript(self, dt):
         return calendar.timegm(dt.timetuple()) * 1000
+
+
+    def get_json_stat_grses(self, dt):
+        try:
+            result = {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
+            chart_result = []
+            ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+            dts = datetime.strptime(dt, "%d.%m.%Y")
+            dts = datetime(dts.year, dts.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            dte = dts + timedelta(days=dts.day)
+            sql_sg = sesgraph.objects.filter(
+                        sdate__gte=dts, sdate__lt=dte).all().values()
+            for r in sql_sg:
+                di = r['sdate']
+                for s in range(0, 5):
+                    ses_t = int(r['ses' + str(s+1)])
+                    if ses_t == 0:
+                        continue
+                    if ses_t == 3:
+                        dte = datetime(di.year, di.month, (di.day + 1), 0, 0, 0, tzinfo=pytz.UTC)
+                    else:
+                        dte = datetime(di.year, di.month, di.day, 8 * ses_t, 0, 0, tzinfo=pytz.UTC)
+                    dts = dte - timedelta(hours=8)
+                    ses_seconds[s] += 28800
+                    for y in range(-1, 5):
+                        sql_val = convstat.objects.filter(
+                            start__gte=dts, end__lt=dte,
+                            nclass__exact=y, end__isnull=False).annotate(
+                            duration=F('end') - F('start')).aggregate(
+                            total=Sum('duration')
+                            )['total']
+                        k = str(y)
+                        val = sql_val.seconds if sql_val else 0
+                        if s not in result or k not in result[s]:
+                            result[s][k] = val
+                        else:
+                            result[s][k] += val
+            for i in range(0, 5):
+                t = []
+                for k in range(-1, 5):
+                    result[i][str(k)] = result[i][str(k)] * 100 / ses_seconds[i] if ses_seconds[i] != 0.0 else 0.0
+                    t.append([[t_class[str(k)], result[i][str(k)]]])
+                chart_result.append(t)
+            return chart_result
+        except Exception as e:
+            print(e)
+            return[]

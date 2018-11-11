@@ -313,6 +313,29 @@ function gestatdata(url, st, en, token, options) {
         });
 }
 
+function getstatsesgrdata(url, dt, token, options) {
+    $.ajax(
+        {
+            url: url,
+            data: {
+                dt: dt, 'csrfmiddlewaretoken': token
+            },
+            timeout: 100000,
+            type: 'POST',
+            beforeSend: function () {
+                $("#wait").show();
+            },
+            success: function (data) {
+                $("#wait").hide();
+                grses(data, options);
+            },
+            error: function () {
+                $("#wait").hide();
+            }
+        });
+}
+
+
 function setstat(data, options)
 {
   for (var i = 0; i < data.length && i < 4; i++) {
@@ -335,6 +358,20 @@ function setstat(data, options)
           tdata[3], tdata[4], tdata[5]], options);
   }
 }
+
+function grses(data, options)
+{
+  for (var i = 0; i < data.length && i < 5; i++) {
+      var chart = 'ch_' + i;
+      var tdata = data[i];
+      drawstattable(i, chart, tdata);
+      options['yaxes'][0]['min'] = 0.0;
+      options['yaxes'][0]['max'] = 105.0;
+      $.plot("#" + chart, [tdata[0], tdata[1], tdata[2],
+          tdata[3], tdata[4], tdata[5]], options);
+  }
+}
+
 
 function getprotocol(url, token, dt , direct) {
    astat =  $.ajax(

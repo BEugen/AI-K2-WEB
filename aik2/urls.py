@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^ai_json_stat', views.ai_json_stat, name='ai_json_stat'),
     url(r'^ai_json_protocol', views.ai_json_protocol, name='ai_json_protocol'),
     url(r'^ai_json_trend', views.ai_json_trend, name='ai_json_trend'),
+    url(r'^ai_json_grses', views.ai_json_grses, name='ai_json_grses'),
 ]
