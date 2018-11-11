@@ -70,6 +70,16 @@ class conv2seconds(models.Model):
     seconds = models.FloatField()
 
 
+class sesgraph(models.Model):
+    id = models.UUIDField(primary_key=True)
+    sdate = models.DateTimeField()
+    ses1 = models.FloatField()
+    ses2 = models.FloatField()
+    ses3 = models.FloatField()
+    ses4 = models.FloatField()
+    ses5 = models.FloatField()
+
+
 class Getdata(object):
     def get_json_data(self):
         try:

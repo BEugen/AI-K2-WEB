@@ -1,0 +1,130 @@
+<div id="nstat" class="float-left height_full">
+    <div class="width_full stat-toolbox-header-form stat-label-font-form">
+         <div class="float-right stat-toolbox-stub-form">
+            &nbsp;
+        </div>
+        <div class="float-right stat-toolbox-update-button-form" id="button_update">
+        </div>
+        <div class="float-right stat-toolbox-calendar-button-form" id="button_start">
+        </div>
+        <div class="float-right">
+            <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_start"
+                   readonly="True" type="text" value="??.??.????">
+        </div>
+        <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            Дата:
+        </div>
+    </div>
+            <div class="width_full title-chart">
+                <div class="width_full stat-chart-half-form chart-stage-container">
+                    <div class="float-left height_full stat-chart-stage-form chart-backround">
+                        <div id="c_0" class="width_full stat-chart-label-form stat-label-font-form">Смена №1</div>
+                    <div id="ch_0" class="width_full chart-height"></div>
+                    </div>
+                    <div class="float-left height_full stat-chart-stage-form chart-backround chart-stage-center">
+                        <div id="c_1" class="width_full stat-chart-label-form stat-label-font-form">Смена №2</div>
+                    <div id="ch_1" class="width_full chart-height"></div>
+                    </div>
+                    <div class="float-left height_full stat-chart-stage-form chart-backround">
+                        <div id="c_2" class="width_full stat-chart-label-form stat-label-font-form">Смена №3</div>
+                    <div id="ch_2" class="width_full chart-height"></div>
+                    </div>
+                    <div class="float-left height_full stat-chart-stage-form chart-backround">
+                        <div id="c_3" class="width_full stat-chart-label-form stat-label-font-form">Смена №4</div>
+                    <div id="ch_3" class="width_full chart-height"></div>
+                    </div>
+                    <div class="float-left height_full stat-chart-stage-form chart-backround">
+                        <div id="c_4" class="width_full stat-chart-label-form stat-label-font-form">Смена №5</div>
+                    <div id="ch_4" class="width_full chart-height"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+<div id="wait" class="tool_wait"></div>
+<script type="text/javascript">
+     $(document).ready(function() {
+         $('#date_start').unbind();
+         $('#date_end').unbind();
+         $('#button_end').unbind();
+         $('#button_start').unbind();
+         $('#date_start').val(getDays());
+         $('#date_end').val(getDays());
+         $('#date_end').datepicker( "setDate", $('#date_end').val());
+         $('#date_start').datepicker( "setDate", $('#date_start').val());
+         $('#date_start').datepicker({
+             firstDay: 1,
+             dateFormat: 'd.mm.yy',
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+            }
+         });
+         $('#date_end').datepicker({
+             firstDay: 1,
+             dateFormat: 'd.mm.yy',
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+            }
+         });
+         var options = {
+			series: {
+				bars: {
+					show: true,
+					barWidth: 0.6,
+					align: "center"
+				}
+			},
+            colors: ["#759ebf", "#666d6e", "#f20855", "#ff0f3c", "#ef7419", "#32ff15"],
+			xaxis: {
+				mode: "categories",
+				tickLength: 0,
+                font: {
+                    color: "#efeeef"
+                }
+			},
+            yaxes:
+                [{
+                    show: true,
+                    font: {
+                        color: "#efeeef"
+                    }
+                }],
+            grid: {
+                color: "#efeeef"
+            }
+		};
+         window.clearTimeout(tmdata);
+         for(var i=0; i<tmstat.length; i++)
+            window.clearTimeout(tmstat[i]);
+
+         if (astat != null){
+                astat.abort();
+            }
+         if (achart != null) {
+                achart.abort();
+            }
+         gestatdata('ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}', options);
+         $('#button_end').click(function() {
+             $('#date_end').datepicker('show');
+         });
+         $('#button_start').click(function() {
+             $('#date_start').datepicker('show')
+         });
+         $('#button_update').click(function () {
+             var st = new Date($('#date_start').datepicker("getDate"));
+             var en = new Date($('#date_end').datepicker("getDate"));
+             if(st > en)
+             {
+                 $('#date_start').addClass('stat-error-color');
+                 $('#date_end').addClass('stat-error-color');
+             }
+             else
+             {
+                 $('#date_start').removeClass('stat-error-color');
+                 $('#date_end').removeClass('stat-error-color');
+                 gestatdata('/ai_json_fullstat', $('#date_start').val(), $('#date_end').val(), '{{ csrf_token }}', options);
+             }
+         });
+     });
+</script>
