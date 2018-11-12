@@ -347,9 +347,9 @@ class GetStatForChart(object):
             result = {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
             chart_result = []
             ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
-            dts = datetime.strptime(dt, "%d.%m.%Y")
-            dts = datetime(dts.year, dts.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
-            dte = dts + timedelta(days=dts.day)
+            dtp = datetime.strptime(dt, "%d.%m.%Y")
+            dts = datetime(dtp.year, dtp.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            dte = datetime(dtp.year, dtp.month, dtp.day, 0, 0, 0, tzinfo=pytz.UTC)
             sql_sg = sesgraph.objects.filter(
                         sdate__gte=dts, sdate__lt=dte).all().values()
             for r in sql_sg:
