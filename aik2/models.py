@@ -342,16 +342,21 @@ class GetStatForChart(object):
         return calendar.timegm(dt.timetuple()) * 1000
 
 
-    def get_json_stat_grses(self, dt):
+    def get_json_stat_grses(self, ds, de, type):
         try:
             result = {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
             chart_result = []
             ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
-            dtp = datetime.strptime(dt, "%d.%m.%Y")
-            dts = datetime(dtp.year, dtp.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
-            dte = datetime(dtp.year, dtp.month, dtp.day, 0, 0, 0, tzinfo=pytz.UTC)
+            dts = datetime.strptime(ds, "%d.%m.%Y")
+            dte = datetime.strptime(de, "%d.%m.%Y")
+            if type == 0:
+                dts = datetime(dts.year, dts.month, dts.day, 0, 0, 0, tzinfo=pytz.UTC)
+                dte = datetime(dte.year, dte.month, dte.day, 0, 0, 0, tzinfo=pytz.UTC)
+            else:
+                dts = datetime(dte.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
+                dte = datetime(dte.year, dte.month, dte.day, 0, 0, 0, tzinfo=pytz.UTC)
             sql_sg = sesgraph.objects.filter(
-                        sdate__gte=dts, sdate__lt=dte).all().values()
+                        sdate__gte=dts, sdate__lte=dte).all().values()
             for r in sql_sg:
                 di = r['sdate']
                 for s in range(0, 5):
@@ -359,7 +364,7 @@ class GetStatForChart(object):
                     if ses_t == 0:
                         continue
                     if ses_t == 3:
-                        dte = datetime(di.year, di.month, (di.day + 1), 0, 0, 0, tzinfo=pytz.UTC)
+                        dte = datetime(di.year, di.month, di.day, 0, 0, 0, tzinfo=pytz.UTC) + timedelta(days=1)
                     else:
                         dte = datetime(di.year, di.month, di.day, 8 * ses_t, 0, 0, tzinfo=pytz.UTC)
                     dts = dte - timedelta(hours=8)

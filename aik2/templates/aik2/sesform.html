@@ -11,15 +11,27 @@
             <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_end"
                    readonly="True" type="text" value="??.??.????">
         </div>
-        <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
-            Дата:
+
+        <div id="txtend" class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            конец:
+        </div>
+        <div class="float-right stat-toolbox-calendar-button-form" id="button_start">
+        </div>
+        <div class="float-right">
+            <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_start"
+                   readonly="True" type="text" value="??.??.????">
+        </div>
+        <div id="txtstart" class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            начало:
         </div>
         <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
-            Период:
-            <select id="pr-interval" class="stat-toolbox-date-form stat-cell-font-form">
+            <select id="pr-interval" class="stat-toolbox-select-form stat-select-font-form">
                 <option selected value="0">Интервал</option>
                 <option value="1">С начала года</option>
             </select>
+        </div>
+        <div class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            Период:
         </div>
     </div>
     <div class="width_full title-predict">
@@ -119,10 +131,23 @@
 <div id="wait" class="tool_wait"></div>
 <script type="text/javascript">
      $(document).ready(function() {
+         console.log('test');
+         $('#date_start').unbind();
          $('#date_end').unbind();
          $('#button_end').unbind();
-         $('#date_end').val(getDays());
+         $('#button_start').unbind();
+         $("#pr-interval").unbind();
+         $('#date_start').val(getDays());
+         $('#date_end').val(getDaysCurrent());
          $('#date_end').datepicker( "setDate", $('#date_end').val());
+         $('#date_start').datepicker( "setDate", $('#date_start').val());
+         $('#date_start').datepicker({
+             firstDay: 1,
+             dateFormat: 'd.mm.yy',
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+            }
+         });
          $('#date_end').datepicker({
              firstDay: 1,
              dateFormat: 'd.mm.yy',
@@ -167,12 +192,48 @@
          if (achart != null) {
                 achart.abort();
             }
-         getstatsesgrdata('ai_json_grses', $('#date_end').val(), '{{ csrf_token }}', options);
+         $("#pr-interval").change(function () {
+           if ($(this).val() === '1')
+           {
+               $("#date_start").hide();
+               $("#button_start").hide();
+               $("#txtstart").hide();
+               $("#txtend").text("до:");
+           }
+           else
+           {
+
+               $("#date_start").show();
+               $("#button_start").show();
+               $("#txtstart").show();
+               $("#txtend").text("конец:");
+           }
+
+        });
+         getstatsesgrdata('ai_json_grses', $('#date_start').val(), $('#date_end').val(),
+                            $("#pr-interval").val(), '{{ csrf_token }}', options);
          $('#button_end').click(function() {
              $('#date_end').datepicker('show');
          });
+         $('#button_start').click(function() {
+             $('#date_start').datepicker('show')
+         });
          $('#button_update').click(function () {
-             getstatsesgrdata('/ai_json_grses', $('#date_end').val(), '{{ csrf_token }}', options);
+             if ($("#pr-interval").val() === '0')
+             {
+                 var st = new Date($('#date_start').datepicker("getDate"));
+                 var en = new Date($('#date_end').datepicker("getDate"));
+                 if(st > en)
+                 {
+                    $('#date_start').addClass('stat-error-color');
+                    $('#date_end').addClass('stat-error-color');
+                    return;
+                 }
+             }
+             $('#date_start').removeClass('stat-error-color');
+             $('#date_end').removeClass('stat-error-color');
+             getstatsesgrdata('/ai_json_grses',  $('#date_start').val(), $('#date_end').val(),
+                                        $("#pr-interval").val(), '{{ csrf_token }}', options);
 
          });
      });

@@ -291,6 +291,17 @@ function getDays() {
   return days + '.' + month + '.' + years;
 }
 
+function getDaysCurrent() {
+    var today = new Date();
+    var result = new Date(today);
+    result.setDate(result.getDate());
+    var days = result.getDate();
+    var month = result.getMonth() + 1;
+    month = (month<10?'0':'') + month;
+    var years = result.getFullYear();
+  return days + '.' + month + '.' + years;
+}
+
 function gestatdata(url, st, en, token, options) {
     $.ajax(
         {
@@ -313,14 +324,14 @@ function gestatdata(url, st, en, token, options) {
         });
 }
 
-function getstatsesgrdata(url, dt, token, options) {
+function getstatsesgrdata(url, ds, de, type, token, options) {
     $.ajax(
         {
             url: url,
             data: {
-                dt: dt, 'csrfmiddlewaretoken': token
+                ds: ds, de: de, type: type, 'csrfmiddlewaretoken': token
             },
-            timeout: 100000,
+            timeout: 600000,
             type: 'POST',
             beforeSend: function () {
                 $("#wait").show();

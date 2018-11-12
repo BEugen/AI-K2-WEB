@@ -596,6 +596,13 @@ ul#menu {
     text-align: center;
     padding-top: 0.4%;
 }
+.stat-select-font-form
+{
+    color: #eaeaea;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 1.1em;
+    text-align: center;
+}
 .stat-header-form
 {
     height: 20%;
@@ -643,6 +650,13 @@ ul#menu {
     margin-left: 10px;
     outline: none;
     padding-top: 4%;
+}
+.stat-toolbox-select-form {
+    background-color: #595b5d;
+    border: none;
+    color: #f5f5f5;
+    margin-left: 10px;
+    outline: none;
 }
 .stat-toolbox-header-form
 {

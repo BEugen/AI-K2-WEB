@@ -127,8 +127,10 @@ def ai_json_grses(request):
     try:
         if request.method == 'POST':
             if request.is_ajax():
-                dt = request.POST['dt']
-                return HttpResponse(json.dumps(DataForChart.get_json_stat_grses(dt)), content_type="application/json")
+                ds = request.POST['ds']
+                de = request.POST['de']
+                type = int(request.POST['type'])
+                return HttpResponse(json.dumps(DataForChart.get_json_stat_grses(ds, de, type)), content_type="application/json")
         return HttpResponse(json.dumps([]), content_type="application/json")
     except Exception as e:
         error = {'error': e}
