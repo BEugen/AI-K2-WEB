@@ -344,7 +344,11 @@ class GetStatForChart(object):
 
     def get_json_stat_grses(self, ds, de, type):
         try:
-            result = {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
+            result = {0: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+                      1: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+                      2: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+                      3: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+                      4: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0}}
             chart_result = []
             ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
             dts = datetime.strptime(ds, "%d.%m.%Y")
@@ -369,19 +373,28 @@ class GetStatForChart(object):
                         dte = datetime(di.year, di.month, di.day, 8 * ses_t, 0, 0, tzinfo=pytz.UTC)
                     dts = dte - timedelta(hours=8)
                     ses_seconds[s] += 28800
-                    for y in range(-1, 5):
-                        sql_val = convstat.objects.filter(
-                            start__gte=dts, end__lt=dte,
-                            nclass__exact=y, end__isnull=False).annotate(
-                            duration=F('end') - F('start')).aggregate(
-                            total=Sum('duration')
-                            )['total']
-                        k = str(y)
-                        val = sql_val.seconds if sql_val else 0
+                    sql_n = convstat.objects.filter(start__gte=dts, end__lt=dte, end__isnull=False,
+                                                    nclass__lte=4).all().values()
+                    for rs in sql_n:
+                        k = str(rs['nclass'])
+                        val = (rs['end'] - rs['start']).total_seconds() if rs else 0
                         if s not in result or k not in result[s]:
                             result[s][k] = val
                         else:
                             result[s][k] += val
+                    # for y in range(-1, 5):
+                    #     sql_val = convstat.objects.filter(
+                    #         start__gte=dts, end__lt=dte,
+                    #         nclass__exact=y, end__isnull=False).annotate(
+                    #         duration=F('end') - F('start')).aggregate(
+                    #         total=Sum('duration')
+                    #         )['total']
+                    #     k = str(y)
+                    #     val = sql_val.seconds if sql_val else 0
+                    #     if s not in result or k not in result[s]:
+                    #         result[s][k] = val
+                    #     else:
+                    #         result[s][k] += val
             for i in range(0, 5):
                 t = []
                 for k in range(-1, 5):
