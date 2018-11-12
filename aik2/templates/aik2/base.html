@@ -1,18 +1,19 @@
 {% load staticfiles %}
+{% load aik2tags %}
 <!DOCTYPE html>
 <html lang="ru">
 <header>
     <meta charset="UTF-8">
     <title>Конвейер №2 УБ ОФ (feat. Keras, Tensorflow Google)</title>
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" >
-    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.min.css' %}?{% static_postfix 'index.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.structure.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.theme.css' %}">
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'js/jquery.ui.datepicker-ru.min.js' %}"></script>
-    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/index.min.js' %}?{% static_postfix 'index.min.js' %}"></script>
     <script src="{% static 'js/imagepreview.js' %}"></script>
     <script src="{% static 'js/flot/jquery.flot.min.js' %}"></script>
     <script src="{% static 'js/flot/jquery.flot.categories.min.js' %}"></script>

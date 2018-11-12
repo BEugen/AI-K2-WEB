@@ -3,7 +3,7 @@ var tmstat = [];
 var achart = null;
 var astat = null;
 
-var limstop = 0.947;
+var limstop = 0.95;
 function getdata(url, root, token) {
    astat =  $.ajax(
         {
@@ -56,12 +56,12 @@ function getstat(url, token) {
 
 function drawstat(data)
 {
-  let sm = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-  for(let i=0; i < 3; i++) {
-      let ind = 0;
-      for(let y=-1; y < 5; y++)
+  var sm = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+  for(var i=0; i < 3; i++) {
+      var ind = 0;
+      for(var y=-1; y < 5; y++)
       {
-          let v = data[i][y.toString()];
+          var v = data[i][y.toString()];
           if( v != null) {
               $("#s" + (i + 1) + "_" + y).text((v/60).toFixed(2) + "ч.");
               sm[ind] += v;
@@ -73,8 +73,8 @@ function drawstat(data)
           ind +=1;
       }
   }
-  let ind = -1;
-  for (let i=0; i < sm.length; i++)
+  var ind = -1;
+  for (var i=0; i < sm.length; i++)
   {
       if(sm[i] !== 0.0) {
           $("#s4" + "_" + ind).text((sm[i]/60).toFixed(2) + "ч.");
