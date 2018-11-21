@@ -471,7 +471,7 @@ function snnclass(id) {
 
 function drawtrend(id, data) {
      var options = {
-            colors: ["#759ebf", "#666d6e", "#f20855", "#ff0f3c", "#ef7419", "#32ff15"]
+            colors: ["#759ebf", "#666d6e", "#f20855", "#ff0f3c", "#ef7419", "#32ff15", "#ff2b00"]
             ,
             xaxis:
             {
@@ -523,6 +523,12 @@ function drawtrend(id, data) {
                     min: 0,
                     max: 105.0,
                     color: "#32ff15"
+                },
+                {
+                    position: "left",
+                    min: 0,
+                    max: 105.0,
+                    color: "#ff2b00"
                 }
                 ],
             legend: {

@@ -313,6 +313,9 @@ class GetStatForChart(object):
                 dtc = datetime(dtc.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
             else:
                 dtc = datetime(dtc.year, dte.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            line_limit = {'label': 'Порог', 'data': [[self.__convert_time_to_jscript(dtc), 90.0],
+                                                          [self.__convert_time_to_jscript(dte), 90.0]],
+                           'lines': {'fill': False, 'lineWidth': 3.0, 'show': True, 'steps': False, 'zero': False}}
             while dtc < dte:
                 for y in range(0, 6):
                     sql_val = conv2seconds.objects.filter(
@@ -333,6 +336,7 @@ class GetStatForChart(object):
                             [[self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
                             if sql_val else 0]]})
                 dtc = dtc + timedelta(days=1)
+            result.append(line_limit)
             return result
         except Exception as e:
             print(e)
