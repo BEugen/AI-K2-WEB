@@ -376,7 +376,7 @@ class GetStatForChart(object):
                     else:
                         dte = datetime(di.year, di.month, di.day, 8 * ses_t, 0, 0, tzinfo=pytz.UTC)
                     dts = dte - timedelta(hours=8)
-                    ses_seconds[s] += 28800
+                    #ses_seconds[s] += 28800
                     sql_n = convstat.objects.filter(start__gte=dts, end__lt=dte, end__isnull=False,
                                                     nclass__lte=4).all().values()
                     for rs in sql_n:
@@ -386,6 +386,7 @@ class GetStatForChart(object):
                             result[s][k] = val
                         else:
                             result[s][k] += val
+                        ses_seconds[s] += val
                     # for y in range(-1, 5):
                     #     sql_val = convstat.objects.filter(
                     #         start__gte=dts, end__lt=dte,
