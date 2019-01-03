@@ -205,7 +205,7 @@ function getdatachart(id, url, chart, options, subscribe, token)
                     data = data[0];
                 }
                 drawchart(id, chart, options, data);
-                drawstattable(id, chart, data);
+                drawstattable(id, 0, chart, data);
                 if(subscribe) {
                     tmstat[id] = window.setTimeout(function () {
                         getdatachart(id, url, chart, options, subscribe, token);
@@ -269,14 +269,21 @@ function drawinfo(data, root)
     drawdata(data, root)
 }
 
-function drawstattable(id, chart, data) {
+function drawstattable(id, mtype, chart, data) {
+    if (mtype === 1)
+    {
+        for (var s= 0; s < 3; s++)
+        {
+            $('#s' + s).hide()
+        }
+    }
     var ch = chart.split('_');
     for (var i = 0; i < data.length; i++) {
         var a = data[i][0];
         if(a[1] !== null && a[1] !== 0.0)
-          $("#" + ch[0] + "_" + id + "_" + i).text((a[1]).toFixed(2));
+          $("#" + ch[0] + "_" + id + "_" + (i + mtype*3)).text((a[1]).toFixed(2));
         else
-          $("#" + ch[0] + "_" + id + "_" + i).text("-");
+          $("#" + ch[0] + "_" + id + "_" + (i +  mtype*3)).text("-");
     }
 }
 
@@ -335,12 +342,12 @@ function gestatdata(url, st, en, token, options) {
         });
 }
 
-function getstatsesgrdata(url, ds, de, type, token, options) {
+function getstatsesgrdata(url, mtype, ds, de, type, token, options) {
     $.ajax(
         {
             url: url,
             data: {
-                ds: ds, de: de, type: type, 'csrfmiddlewaretoken': token
+                ds: ds, de: de, type: type, mtype: mtype, 'csrfmiddlewaretoken': token
             },
             timeout: 600000,
             type: 'POST',
@@ -349,7 +356,7 @@ function getstatsesgrdata(url, ds, de, type, token, options) {
             },
             success: function (data) {
                 $("#wait").hide();
-                grses(data, options);
+                grses(data, mtype, options);
             },
             error: function () {
                 $("#wait").hide();
@@ -369,7 +376,7 @@ function setstat(data, options)
           chart += 'all';
       }
       var tdata = data[i];
-      drawstattable(i, chart, tdata);
+      drawstattable(i, 0, chart, tdata);
       options['yaxes'][0]['min'] = 0.0;
       options['yaxes'][0]['max'] = 105.0;
       //if (i < 3) {
@@ -381,16 +388,23 @@ function setstat(data, options)
   }
 }
 
-function grses(data, options)
+function grses(data, mtype, options)
 {
   for (var i = 0; i < data.length && i < 5; i++) {
       var chart = 'ch_' + i;
       var tdata = data[i];
-      drawstattable(i, chart, tdata);
+      drawstattable(i, mtype, chart, tdata);
       options['yaxes'][0]['min'] = 0.0;
       options['yaxes'][0]['max'] = 105.0;
-      $.plot("#" + chart, [tdata[0], tdata[1], tdata[2],
-          tdata[3], tdata[4], tdata[5]], options);
+      if (mtype === 0) {
+          $.plot("#" + chart, [tdata[0], tdata[1], tdata[2],
+              tdata[3], tdata[4], tdata[5]], options);
+      }
+      else
+      {
+          $.plot("#" + chart, [tdata[0], tdata[1], tdata[2]], options);
+      }
+
   }
 }
 

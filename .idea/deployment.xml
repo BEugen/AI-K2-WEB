@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="ssh://administrator@172.31.182.40:22/usr/bin/python3" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ssh://administrator@172.31.182.40:22/usr/bin/python3" autoUploadExternalChanges="true">
     <serverData>
+      <paths name="Copy of project-level server 'skzasutp0004'">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Copy of project-level server 'skzasutp0004' (1)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="Production">
         <serverdata>
           <mappings>
             <mapping deploy="/home/django/AI-K2-WEB" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="skzasutp0004">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -17,5 +38,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

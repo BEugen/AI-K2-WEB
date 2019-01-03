@@ -22,7 +22,9 @@ def index(request):
             if id == 3:
                 template = 'aik2/trendsform.html'
             if id == 4:
-                template = 'aik2/sesform.html'
+                return render(request, 'aik2/sesform.html', {"mtype": 0})
+            if id == 5:
+                return render(request, 'aik2/sesform.html', {"mtype": 1})
             return render(request, template, {})
     return render(request, 'aik2/index.html', {})
 
@@ -130,7 +132,8 @@ def ai_json_grses(request):
                 ds = request.POST['ds']
                 de = request.POST['de']
                 type = int(request.POST['type'])
-                return HttpResponse(json.dumps(DataForChart.get_json_stat_grses(ds, de, type)), content_type="application/json")
+                mtype = int(request.POST['mtype'])
+                return HttpResponse(json.dumps(DataForChart.get_json_stat_grses(ds, de, type, mtype)), content_type="application/json")
         return HttpResponse(json.dumps([]), content_type="application/json")
     except Exception as e:
         error = {'error': e}
