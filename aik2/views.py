@@ -20,11 +20,13 @@ def index(request):
             if id == 2:
                 template = 'aik2/protform.html'
             if id == 3:
-                template = 'aik2/trendsform.html'
+                return render(request, 'aik2/trendsform.html', {"ttype": 0})
             if id == 4:
                 return render(request, 'aik2/sesform.html', {"mtype": 0})
             if id == 5:
                 return render(request, 'aik2/sesform.html', {"mtype": 1})
+            if id == 6:
+                return render(request, 'aik2/trendsform.html', {"ttype": 1})
             return render(request, template, {})
     return render(request, 'aik2/index.html', {})
 
@@ -118,7 +120,8 @@ def ai_json_trend(request):
         if request.method == 'POST':
             if request.is_ajax():
                 idc = request.POST['id']
-                return HttpResponse(json.dumps(DataForChart.get_json_thrend(idc)), content_type="application/json")
+                ttype = int(request.POST['type'])
+                return HttpResponse(json.dumps(DataForChart.get_json_thrend(idc, ttype)), content_type="application/json")
         return HttpResponse(json.dumps([]), content_type="application/json")
     except Exception as e:
         error = {'error': e}

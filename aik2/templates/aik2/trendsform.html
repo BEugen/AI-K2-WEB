@@ -26,8 +26,8 @@
          if (achart != null) {
                 achart.abort();
             }
-         gettrends('/ai_json_trend', '{{ csrf_token }}', 0);
-         gettrends('/ai_json_trend', '{{ csrf_token }}', 1);
+         gettrends('/ai_json_trend', {{ ttype }}, '{{ csrf_token }}', 0);
+         gettrends('/ai_json_trend', {{ ttype }}, '{{ csrf_token }}', 1);
      });
 
 

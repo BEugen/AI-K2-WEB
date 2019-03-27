@@ -431,12 +431,12 @@ function getprotocol(url, token, dt , direct) {
         });
 }
 
-function gettrends(url, token, id) {
+function gettrends(url, type, token, id) {
    astat =  $.ajax(
         {
             url: url,
             data: {
-                id: id, 'csrfmiddlewaretoken': token
+                id: id, type: type, 'csrfmiddlewaretoken': token
             },
             timeout: 100000,
             type: 'POST',
