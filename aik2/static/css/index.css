@@ -809,6 +809,20 @@ ul#menu {
     border: #a6dbed solid 1px;
     color: #a6dbed;
 }
+.prot-data-select-marg
+{
+    margin-left: -60%;
+}
+.prot-body-form
+{
+    overflow: auto;
+    background-color: #595b5d;
+    font-weight: bold;
+    text-align: center;
+    color: #eaeaea;
+    margin-left: 5px;
+    height: 90%;
+}
 .tend-chart-half-form
 {
     height: 70%;

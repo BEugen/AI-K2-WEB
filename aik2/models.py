@@ -303,6 +303,27 @@ class GetStatForChart(object):
             print(e)
             return []
 
+    def get_json_dt_protocol(self, sttime, entime):
+        try:
+            if sttime and entime:
+                sdt = datetime.strptime(sttime + ' 0:00:00', '%d.%m.%Y %H:%M:%S')
+                sdt = datetime(sdt.year, sdt.month, sdt.day, sdt.hour, sdt.minute, sdt.second, tzinfo=pytz.UTC)
+                edt = datetime.strptime(entime + ' 23:59:59', '%d.%m.%Y %H:%M:%S')
+                edt = datetime(edt.year, edt.month, edt.day, edt.hour, edt.minute, edt.second, tzinfo=pytz.UTC)
+                sql_val = conveyer2status.objects.filter(tstamp__gte=sdt, tstamp__lte=edt).\
+                    order_by('-tstamp').all().values()
+            else:
+                sql_val = conveyer2status.objects. \
+                              order_by('-tstamp')[:20].all().values()
+            for row in sql_val:
+                row['id'] = str(row['id'])
+                row['tstamp'] = json.dumps(row['tstamp'].strftime('%d.%m.%Y %H:%M:%S')).replace('"', '')
+                row['tfile'] = json.dumps(row['tfile'].strftime('%d.%m.%Y %H:%M:%S')).replace('"', '')
+            return [dict(sql) for sql in sql_val]
+        except Exception as e:
+            print(e)
+            return []
+
     def get_json_thrend(self, id):
         try:
             result = []

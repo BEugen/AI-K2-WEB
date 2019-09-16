@@ -1,5 +1,5 @@
 <div id="nstat" class="float-left height_full">
- <div id="hd" class="prot-toolbox-header-form">
+    <div id="hd" class="prot-toolbox-header-form">
      <div class="float-left prot-cell-font-form">Дата/время</div>
      <div class="float-left prot-cell-font-form">Дата/время кадра</div>
      <div class="float-left prot-cell-font-form">Кадр</div>
@@ -11,8 +11,34 @@
      <div class="float-left prot-cell-font-form">SNN1</div>
      <div class="float-left prot-cell-font-form">SNN2</div>
      <div class="float-left prot-cell-font-form">SNN3</div>
- </div>
+    </div>
+    <div id="pbody" class="prot-body-form"></div>
     <div class="prot-toolbox-header-form">
+        <div class="float-left width_full prot-data-select-marg">
+        <div class="float-right stat-toolbox-update-button-form" id="button_update">
+        </div>
+        <div class="float-right stat-toolbox-calendar-button-form" id="button_end">
+        </div>
+        <div class="float-right">
+            <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_end"
+                   readonly="True" type="text" value="??.??.????">
+        </div>
+
+        <div id="txtend" class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            конец:
+        </div>
+        <div class="float-right stat-toolbox-calendar-button-form" id="button_start">
+        </div>
+        <div class="float-right">
+            <input class="stat-toolbox-date-form stat-cell-font-form"  disabled="disabled" id="date_start"
+                   readonly="True" type="text" value="??.??.????">
+        </div>
+        <div id="txtstart" class="float-right stat-cell-font-form stat-toolbox-margin-form">
+            начало:
+        </div>
+        </div>
+
+
        <div id='last' class="float-right prot-naw-font-form">
             >>
        </div>
@@ -20,6 +46,7 @@
         <div id='prev' class="float-right prot-naw-font-form">
             <<
        </div>
+
     </div>
 </div>
 <div id="wait" class="tool_wait"></div>
@@ -36,6 +63,29 @@
          if (achart != null) {
                 achart.abort();
             }
+
+         $('#date_start').unbind();
+         $('#date_end').unbind();
+         $('#button_end').unbind();
+         $('#button_start').unbind();
+         $('#date_start').val(getDays());
+         $('#date_end').val(getDays());
+         $('#date_end').datepicker( "setDate", $('#date_end').val());
+         $('#date_start').datepicker( "setDate", $('#date_start').val());
+         $('#date_start').datepicker({
+             firstDay: 1,
+             dateFormat: 'd.mm.yy',
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+            }
+         });
+         $('#date_end').datepicker({
+             firstDay: 1,
+             dateFormat: 'd.mm.yy',
+            onSelect: function (dateText) {
+                $(this).val(dateText);
+            }
+         });
          getprotocol('/ai_json_protocol', '{{ csrf_token }}', '', 0);
          $("#last").click(function(){
              getprotocol('/ai_json_protocol', '{{ csrf_token }}', $("#t0").text(), 1);
@@ -43,6 +93,29 @@
          $("#prev").click(function(){
              var l = $( ".prot-row-form" ).length - 1;
              getprotocol('/ai_json_protocol', '{{ csrf_token }}', $("#t" + l).text(), 0);
+         });
+
+         $('#button_end').click(function() {
+             $('#date_end').datepicker('show');
+         });
+         $('#button_start').click(function() {
+             $('#date_start').datepicker('show')
+         });
+         $('#button_update').click(function () {
+             var st = new Date($('#date_start').datepicker("getDate"));
+             var en = new Date($('#date_end').datepicker("getDate"));
+             if(st > en)
+             {
+                 $('#date_start').addClass('stat-error-color');
+                 $('#date_end').addClass('stat-error-color');
+             }
+             else
+             {
+                 $('#date_start').removeClass('stat-error-color');
+                 $('#date_end').removeClass('stat-error-color');
+                 getprotocol_dt('/ai_json_dt_protocol', '{{ csrf_token }}',
+                     $('#date_start').val(), $('#date_end').val());
+             }
          });
     });
 </script>

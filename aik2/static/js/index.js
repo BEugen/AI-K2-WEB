@@ -417,6 +417,28 @@ function getprotocol(url, token, dt , direct) {
         });
 }
 
+function getprotocol_dt(url, token, sdt , edt) {
+   astat =  $.ajax(
+        {
+            url: url,
+            data: {
+                sdt: sdt, edt: edt, 'csrfmiddlewaretoken': token
+            },
+            timeout: 100000,
+            type: 'POST',
+            beforeSend: function () {
+                 $("#wait").show();
+            },
+            success: function (data) {
+               $("#wait").hide();
+               protocolview(data);
+            },
+            error: function() {
+                $("#wait").hide();
+            }
+        });
+}
+
 function gettrends(url, token, id) {
    astat =  $.ajax(
         {
@@ -456,8 +478,8 @@ function protocolview(data) {
             "<div class='float-left prot-row-font-form'>" + data[i]['snn1'] + "</div>" +
             "<div class='float-left prot-row-font-form'>" + data[i]['snn2'] + "</div>" +
             "<div class='float-left prot-row-font-form'>" + data[i]['snn3'] + "</div></div>";
-        //$("#nstat").append(r);
-        $(r).insertAfter("#hd");
+        $("#pbody").append(r);
+        //$(r).insertAfter("#pbody");
     }
     $('.preview').anarchytip();
 }

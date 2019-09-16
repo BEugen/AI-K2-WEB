@@ -111,6 +111,20 @@ def ai_json_protocol(request):
         return HttpResponse(json.dumps(error), content_type="application/json")
 
 
+def ai_json_dt_protocol(request):
+    try:
+        if request.method == 'POST':
+            if request.is_ajax():
+                sdt = request.POST['sdt']
+                edt = request.POST['edt']
+                return HttpResponse(json.dumps(DataForChart.get_json_dt_protocol(sdt, edt)),
+                                    content_type="application/json")
+        return HttpResponse(json.dumps([]), content_type="application/json")
+    except Exception as e:
+        error = {'error': e}
+        return HttpResponse(json.dumps(error), content_type="application/json")
+
+
 def ai_json_trend(request):
     try:
         if request.method == 'POST':
