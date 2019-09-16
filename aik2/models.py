@@ -282,6 +282,7 @@ class GetStatForChart(object):
             print(e)
             return []
 
+#Protocol recognise: button navigation (<< >>)
     def get_json_protocol(self, direct, dtime):
         try:
             if dtime:
@@ -303,6 +304,7 @@ class GetStatForChart(object):
             print(e)
             return []
 
+#Protocol recognise: select date interval
     def get_json_dt_protocol(self, sttime, entime):
         try:
             if sttime and entime:
@@ -310,7 +312,7 @@ class GetStatForChart(object):
                 sdt = datetime(sdt.year, sdt.month, sdt.day, sdt.hour, sdt.minute, sdt.second, tzinfo=pytz.UTC)
                 edt = datetime.strptime(entime + ' 23:59:59', '%d.%m.%Y %H:%M:%S')
                 edt = datetime(edt.year, edt.month, edt.day, edt.hour, edt.minute, edt.second, tzinfo=pytz.UTC)
-                sql_val = conveyer2status.objects.filter(tstamp__gte=sdt, tstamp__lte=edt).\
+                sql_val = conveyer2status.objects.filter(tstamp__gte=sdt, tstamp__lte=edt). \
                     order_by('-tstamp').all().values()
             else:
                 sql_val = conveyer2status.objects. \
@@ -324,7 +326,15 @@ class GetStatForChart(object):
             print(e)
             return []
 
-    def get_json_thrend(self, id):
+    # Generate tendention graph
+    def get_json_thrend(self, id, ttype):
+        if ttype == 0:
+            return self.__get_full_thrend(id)
+        else:
+            return self.__get_material_thrend(id)
+
+    # Generate tendention thrend no include idle, image error
+    def __get_material_thrend(self, id):
         try:
             result = []
             dtc = datetime.now()
@@ -334,6 +344,51 @@ class GetStatForChart(object):
                 dtc = datetime(dtc.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
             else:
                 dtc = datetime(dtc.year, dte.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            line_limit = {'label': 'Порог', 'data': [[self.__convert_time_to_jscript(dtc), 90.0],
+                                                     [self.__convert_time_to_jscript(dte), 90.0]],
+                          'lines': {'fill': False, 'lineWidth': 3.0, 'show': True, 'steps': False, 'zero': False}}
+            while dtc < dte:
+                # select all time seconds and no include image not recognise, konveyer idle
+                allt = conv2seconds.objects.filter(
+                    ndate__gte=dtc, ndate__lt=(dtc + timedelta(days=1)), nclass__gte=2).aggregate(total=Sum('seconds'))[
+                    'total']
+                for y in range(3, 6):
+                    sql_val = conv2seconds.objects.filter(
+                        ndate__gte=dtc, ndate__lt=(dtc + timedelta(days=1)), nclass__exact=(y - 1)).all().values()
+                    if sql_val and len(sql_val) > 0:
+                        sql_val = sql_val[0]['seconds']
+                    else:
+                        sql_val = None
+                    if allt is None:
+                        sql_val = None
+                    if len(result) > y:
+                        result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
+                        if sql_val else 0])
+                    else:
+                        result.append({'label': t_class[str(y - 1)], 'data':
+                            [[self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
+                            if sql_val else 0]]})
+                dtc = dtc + timedelta(days=1)
+            result.append(line_limit)
+            return result
+        except Exception as e:
+            print(e)
+            return []
+
+    # Generate tendention thrend all class
+    def __get_full_thrend(self, id):
+        try:
+            result = []
+            dtc = datetime.now()
+            dte = datetime(dtc.year, dtc.month, dtc.day, dtc.hour, dtc.minute, dtc.second, tzinfo=pytz.UTC)
+            dte = dte - timedelta(days=1)
+            if id == '1':
+                dtc = datetime(dtc.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            else:
+                dtc = datetime(dtc.year, dte.month, 1, 0, 0, 0, tzinfo=pytz.UTC)
+            line_limit = {'label': 'Порог', 'data': [[self.__convert_time_to_jscript(dtc), 90.0],
+                                                     [self.__convert_time_to_jscript(dte), 90.0]],
+                          'lines': {'fill': False, 'lineWidth': 3.0, 'show': True, 'steps': False, 'zero': False}}
             while dtc < dte:
                 for y in range(0, 6):
                     sql_val = conv2seconds.objects.filter(
@@ -348,12 +403,13 @@ class GetStatForChart(object):
                         allt = 86400
                     if len(result) > y:
                         result[y]['data'].append([self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
-                                                if sql_val else 0])
+                        if sql_val else 0])
                     else:
                         result.append({'label': t_class[str(y - 1)], 'data':
                             [[self.__convert_time_to_jscript(dtc), sql_val * 100.0 / allt
                             if sql_val else 0]]})
                 dtc = dtc + timedelta(days=1)
+            result.append(line_limit)
             return result
         except Exception as e:
             print(e)
@@ -362,14 +418,23 @@ class GetStatForChart(object):
     def __convert_time_to_jscript(self, dt):
         return calendar.timegm(dt.timetuple()) * 1000
 
+    def __generate_result_grses(self, mtype):
+        result = {}
+        for i in range(0, 5):
+            result[i] = {}
+            m = 2 if mtype else -1
+            for j in range(m, 5):
+                result[i][str(j)] = 0
+        return result
 
-    def get_json_stat_grses(self, ds, de, type):
+    def get_json_stat_grses(self, ds, de, type, mtype):
         try:
-            result = {0: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-                      1: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-                      2: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-                      3: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-                      4: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0}}
+            result = self.__generate_result_grses(mtype)
+            # {0: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+            #     1: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+            #      2: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+            #      3: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
+            #      4: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0}}
             chart_result = []
             ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
             dts = datetime.strptime(ds, "%d.%m.%Y")
@@ -381,11 +446,11 @@ class GetStatForChart(object):
                 dts = datetime(dte.year, 1, 1, 0, 0, 0, tzinfo=pytz.UTC)
                 dte = datetime(dte.year, dte.month, dte.day, 0, 0, 0, tzinfo=pytz.UTC)
             sql_sg = sesgraph.objects.filter(
-                        sdate__gte=dts, sdate__lte=dte).all().values()
+                sdate__gte=dts, sdate__lte=dte).all().values()
             for r in sql_sg:
                 di = r['sdate']
                 for s in range(0, 5):
-                    ses_t = int(r['ses' + str(s+1)])
+                    ses_t = int(r['ses' + str(s + 1)])
                     if ses_t == 0:
                         continue
                     if ses_t == 3:
@@ -393,36 +458,27 @@ class GetStatForChart(object):
                     else:
                         dte = datetime(di.year, di.month, di.day, 8 * ses_t, 0, 0, tzinfo=pytz.UTC)
                     dts = dte - timedelta(hours=8)
-                    ses_seconds[s] += 28800
+                    # ses_seconds[s] += 28800
                     sql_n = convstat.objects.filter(start__gte=dts, end__lt=dte, end__isnull=False,
                                                     nclass__lte=4).all().values()
                     for rs in sql_n:
+                        if mtype and rs['nclass'] < 2:
+                            continue
                         k = str(rs['nclass'])
                         val = (rs['end'] - rs['start']).total_seconds() if rs else 0
                         if s not in result or k not in result[s]:
                             result[s][k] = val
                         else:
                             result[s][k] += val
-                    # for y in range(-1, 5):
-                    #     sql_val = convstat.objects.filter(
-                    #         start__gte=dts, end__lt=dte,
-                    #         nclass__exact=y, end__isnull=False).annotate(
-                    #         duration=F('end') - F('start')).aggregate(
-                    #         total=Sum('duration')
-                    #         )['total']
-                    #     k = str(y)
-                    #     val = sql_val.seconds if sql_val else 0
-                    #     if s not in result or k not in result[s]:
-                    #         result[s][k] = val
-                    #     else:
-                    #         result[s][k] += val
+                        ses_seconds[s] += val
             for i in range(0, 5):
                 t = []
-                for k in range(-1, 5):
+                m = 2 if mtype else -1
+                for k in range(m, 5):
                     result[i][str(k)] = result[i][str(k)] * 100 / ses_seconds[i] if ses_seconds[i] != 0.0 else 0.0
                     t.append([[t_class[str(k)], result[i][str(k)]]])
                 chart_result.append(t)
             return chart_result
         except Exception as e:
             print(e)
-            return[]
+            return []

@@ -109,7 +109,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'aik2web',
         'USER': 'aik2webusr',
-        'PASSWORD': 'yjdfzptkfylbz3',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': ''
     }
