@@ -390,7 +390,7 @@ function setstat(data, options)
 
 function grses(data, mtype, options)
 {
-  for (var i = 0; i < data.length && i < 5; i++) {
+  for (var i = 0; i < data.length && i < 6; i++) {
       var chart = 'ch_' + i;
       var tdata = data[i];
       drawstattable(i, mtype, chart, tdata);

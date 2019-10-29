@@ -512,7 +512,7 @@ ul#menu {
 }
 .stat-cell-all
 {
-    width: 15%;
+    width: 12%;
 }
 .stat-cell-font
 {
@@ -535,7 +535,7 @@ ul#menu {
 .stat-color-label
 {
     height: 50%;
-    width: 12%;
+    width: 10%;
     border: 1px solid #eaeaea;
 }
 .stat-color-0 {
@@ -681,7 +681,7 @@ ul#menu {
 }
 .stat-chart-stage-form
 {
-    width: 32.9%;
+    width: 32.6%;
     margin: 2.7px;
 }
 .stat-toolbox-stub-form
@@ -811,7 +811,7 @@ ul#menu {
 }
 .prot-data-select-marg
 {
-    margin-left: -60%;
+    margin-left: -50%;
 }
 .prot-body-form
 {
@@ -829,4 +829,9 @@ ul#menu {
 }
 .trend-chart-height {
     height: 90%;
+}
+.facke-style
+{
+    width: 100%;
+    height: 20%;
 }

@@ -377,6 +377,11 @@ class GetStatForChart(object):
 
     # Generate tendention thrend all class
     def __get_full_thrend(self, id):
+        """
+        Генерирует данные для графика тенденций
+        :param id:  1 - график с начало года 0 - график с начала месяца
+        :return:
+        """
         try:
             result = []
             dtc = datetime.now()
@@ -419,8 +424,14 @@ class GetStatForChart(object):
         return calendar.timegm(dt.timetuple()) * 1000
 
     def __generate_result_grses(self, mtype):
+        """
+        Генерирует пустой словарь для отправки даанных клиенту
+
+        :param mtype: Тип отчета - токл по материалу - 1, все классы - 0
+        :return: словарь данных
+        """
         result = {}
-        for i in range(0, 5):
+        for i in range(0, 6):
             result[i] = {}
             m = 2 if mtype else -1
             for j in range(m, 5):
@@ -428,15 +439,20 @@ class GetStatForChart(object):
         return result
 
     def get_json_stat_grses(self, ds, de, type, mtype):
+        """
+        Возвращает статистику по сменам и материалу
+
+        :param ds: дата начала выборки
+        :param de: дата конца выборки
+        :param type: тип выбора интервала данных 0 - интервал (начало, конец), 1 - с начала месяца
+        :param mtype: тип статистики 1 - только по материалу 0 - все классы
+        :return: возращает словарь с процентами времени прохождения по каждому классу
+        """
+
         try:
             result = self.__generate_result_grses(mtype)
-            # {0: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-            #     1: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-            #      2: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-            #      3: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0},
-            #      4: {'-1': 0, '0': 0, '1': 0, '2': 0, '3': 0, '4': 0}}
             chart_result = []
-            ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+            ses_seconds = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
             dts = datetime.strptime(ds, "%d.%m.%Y")
             dte = datetime.strptime(de, "%d.%m.%Y")
             if type == 0:
@@ -471,7 +487,10 @@ class GetStatForChart(object):
                         else:
                             result[s][k] += val
                         ses_seconds[s] += val
-            for i in range(0, 5):
+                        #расчет времени по всем сменам
+                        result[5][k] += val
+                        ses_seconds[5] += val
+            for i in range(0, 6):
                 t = []
                 m = 2 if mtype else -1
                 for k in range(m, 5):

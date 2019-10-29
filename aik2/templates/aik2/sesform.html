@@ -37,13 +37,14 @@
     <div class="width_full title-predict">
                 <div class="width_full stat-label">Статистика (%)</div>
                 <div class="stat-header">
-                    <div class="float-left stat-ses-cell-1 stat-cell-font">Параметр</div>
+                    <div class="float-left stat-ses-cell-1 stat-cell-font">Вид материала</div>
                     <div class="float-left stat-cell-all stat-cell-font">Обозн.</div>
                     <div id="s_0" class="float-left stat-cell-all stat-cell-font">Смена №1</div>
                     <div id="s_1" class="float-left stat-cell-all stat-cell-font">Смена №2</div>
                     <div id="s_2" class="float-left stat-cell-all stat-cell-font">Смена №3</div>
                     <div id="s_3" class="float-left stat-cell-all stat-cell-font">Смена №4</div>
                     <div id="s_4" class="float-left stat-cell-all stat-cell-font">Смена №5</div>
+                    <div id="s_5" class="float-left stat-cell-all stat-cell-font">Суммарно</div>
                 </div>
                 <div id='s0' class="stat-row">
                     <div class="float-left stat-ses-cell-1 stat-cell-font-l">Простой</div>
@@ -53,6 +54,7 @@
                     <div id="ch_2_0" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_3_0" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_4_0" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_5_0" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
                 <div id='s1' class="stat-row">
                     <div class="float-left stat-ses-cell-1 stat-cell-font-l">Без материала</div>
@@ -62,6 +64,7 @@
                     <div id="ch_2_1" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_3_1" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_4_1" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_5_1" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
                 <div id='s2' class="stat-row">
                     <div class="float-left stat-ses-cell-1 stat-cell-font-l">Не распознано</div>
@@ -71,6 +74,7 @@
                     <div id="ch_2_2" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_3_2" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_4_2" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_5_2" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
                 <div id='s3' class="stat-row">
                     <div class="float-left stat-ses-cell-1 stat-cell-font-l">Пыль</div>
@@ -80,6 +84,7 @@
                     <div id="ch_2_3" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_3_3" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_4_3" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_5_3" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
                 <div id='s4' class="stat-row">
                     <div class="float-left stat-ses-cell-1 stat-cell-font-l">Брикеты, мелочь</div>
@@ -89,6 +94,7 @@
                     <div id="ch_2_4" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_3_4" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_4_4" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_5_4" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
                 <div id='s5' class="stat-row">
                     <div class="float-left stat-ses-cell-1 stat-cell-font-l">Брикеты</div>
@@ -98,6 +104,7 @@
                     <div id="ch_2_5" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_3_5" class="float-left stat-cell-all stat-cell-font"></div>
                     <div id="ch_4_5" class="float-left stat-cell-all stat-cell-font"></div>
+                    <div id="ch_5_5" class="float-left stat-cell-all stat-cell-font"></div>
                 </div>
 
             </div>
@@ -123,6 +130,10 @@
                         <div id="c_4" class="width_full stat-chart-label-form stat-label-font-form">Смена №5</div>
                     <div id="ch_4" class="width_full chart-height"></div>
                     </div>
+                    <div class="float-left height_full stat-chart-stage-form chart-backround">
+                        <div id="c_5" class="width_full stat-chart-label-form stat-label-font-form">Суммарно</div>
+                    <div id="ch_5" class="width_full chart-height"></div>
+                    </div>
                 </div>
 
             </div>
@@ -131,7 +142,6 @@
 <div id="wait" class="tool_wait"></div>
 <script type="text/javascript">
      $(document).ready(function() {
-         console.log('test');
          $('#date_start').unbind();
          $('#date_end').unbind();
          $('#button_end').unbind();
